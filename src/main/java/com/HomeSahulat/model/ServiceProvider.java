@@ -1,5 +1,6 @@
     package com.HomeSahulat.model;
 
+    import com.fasterxml.jackson.annotation.JsonFormat;
     import com.fasterxml.jackson.annotation.JsonIgnore;
     import lombok.AllArgsConstructor;
     import lombok.Builder;
@@ -22,10 +23,10 @@
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
+        @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
         @CreationTimestamp
         private LocalDateTime createdAt;
 
-        private String name;
         private String description;
         private Double hourlyPrice;
         private Double totalExperience;

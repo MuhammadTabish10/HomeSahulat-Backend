@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -22,8 +23,9 @@ public class BookingDto {
     @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Future(message = "Appointment date should be in the future")
-    private LocalDateTime appointmentDateTime;
+    private LocalDate appointmentDate;
 
     private Boolean status;
 

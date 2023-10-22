@@ -1,5 +1,6 @@
 package com.HomeSahulat.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     @CreationTimestamp
     private LocalDateTime createdAt;
 

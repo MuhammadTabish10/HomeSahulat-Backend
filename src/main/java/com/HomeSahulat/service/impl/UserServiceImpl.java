@@ -12,7 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
     public UserDto registerUser(UserDto userdto) {
         User user = toEntity(userdto);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setStatus(true);
 
         user.setLocation((locationRepository.findById(user.getLocation().getId())
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Location not found for id => %d", user.getLocation().getId())))));
@@ -43,6 +46,7 @@ public class UserServiceImpl implements UserService {
                     .orElseThrow(()-> new RecordNotFoundException("Role not found"));
             roleList.add(role);
         }
+
         user.setRoles(roleList);
         userRepository.save(user);
         return toDto(user);
@@ -83,7 +87,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto update(Long id, UserDto userDto) {
-        int count = 0;
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("User not found for id => %d", id)));
 
@@ -101,34 +104,14 @@ public class UserServiceImpl implements UserService {
         existingUser.setLocation(locationRepository.findById(userDto.getLocation().getId())
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Location not found for id => %d", userDto.getLocation().getId()))));
 
-        Set<Role> existingRoleValues = existingUser.getRoles();
-        Set<Role> newRoleValues = userDto.getRoles();
-        Set<Role> newValuesToAdd = new HashSet<>();
+        existingUser.getRoles().removeIf(role -> !userDto.getRoles().contains(role));
 
-        Iterator<Role> iterator = existingRoleValues.iterator();
-        while (iterator.hasNext()) {
-            Role existingRole = iterator.next();
-            if (newRoleValues.stream().noneMatch(newRole -> newRole.getId().equals(existingRole.getId()))) {
-                iterator.remove();
-                roleRepository.delete(existingRole);
-            }
-        }
+        Set<Role> roleList = userDto.getRoles().stream()
+                .map(role -> roleRepository.findById(role.getId())
+                        .orElseThrow(() -> new RecordNotFoundException("Role not found")))
+                .collect(Collectors.toSet());
 
-        for (Role newValue : newRoleValues) {
-            Optional<Role> existingValue = existingRoleValues.stream()
-                    .filter(rsValue -> rsValue.getId().equals(newValue.getId())).findFirst();
-            if (existingValue.isPresent()) {
-                Role existingRoleValue = existingValue.get();
-                existingRoleValue.setName(newValue.getName());
-            } else {
-                newValuesToAdd.add(newValue);
-                count++;
-            }
-        }
-        if (count > 0) {
-            existingRoleValues.addAll(newValuesToAdd);
-        }
-
+        existingUser.setRoles(roleList);
         User updatedUser = userRepository.save(existingUser);
         return toDto(updatedUser);
     }
@@ -136,6 +119,7 @@ public class UserServiceImpl implements UserService {
     public UserDto toDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
+                .createdAt(user.getCreatedAt())
                 .name(user.getName())
                 .password(user.getPassword())
                 .email(user.getEmail())
@@ -146,12 +130,14 @@ public class UserServiceImpl implements UserService {
                 .deviceId(user.getDeviceId())
                 .location(user.getLocation())
                 .roles(user.getRoles())
+                .status(user.getStatus())
                 .build();
     }
 
     public User toEntity(UserDto userDto) {
         return User.builder()
                 .id(userDto.getId())
+                .createdAt(userDto.getCreatedAt())
                 .name(userDto.getName())
                 .password(userDto.getPassword())
                 .email(userDto.getEmail())
@@ -162,6 +148,7 @@ public class UserServiceImpl implements UserService {
                 .deviceId(userDto.getDeviceId())
                 .location(userDto.getLocation())
                 .roles(userDto.getRoles())
+                .status(userDto.getStatus())
                 .build();
     }
 }

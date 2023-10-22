@@ -93,7 +93,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Service Provider not found for id => %d", id)));
 
         existingServiceProvider.setStatus(serviceProviderDto.getStatus());
-        existingServiceProvider.setName(serviceProviderDto.getName());
         existingServiceProvider.setDescription(serviceProviderDto.getDescription());
         existingServiceProvider.setHourlyPrice(serviceProviderDto.getHourlyPrice());
         existingServiceProvider.setTotalExperience(serviceProviderDto.getTotalExperience());
@@ -145,7 +144,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         return ServiceProviderDto.builder()
                 .id(serviceProvider.getId())
                 .createdAt(serviceProvider.getCreatedAt())
-                .name(serviceProvider.getName())
                 .description(serviceProvider.getDescription())
                 .hourlyPrice(serviceProvider.getHourlyPrice())
                 .totalExperience(serviceProvider.getTotalExperience())
@@ -163,7 +161,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         return ServiceProvider.builder()
                 .id(serviceProviderDto.getId())
                 .createdAt(serviceProviderDto.getCreatedAt())
-                .name(serviceProviderDto.getName())
                 .description(serviceProviderDto.getDescription())
                 .hourlyPrice(serviceProviderDto.getHourlyPrice())
                 .totalExperience(serviceProviderDto.getTotalExperience())

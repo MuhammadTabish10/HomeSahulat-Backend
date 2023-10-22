@@ -25,9 +25,6 @@ public class ServiceProviderDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
-    @NotBlank(message = "Name cannot be blank")
-    private String name;
-
     @NotBlank(message = "Description cannot be blank")
     private String description;
 

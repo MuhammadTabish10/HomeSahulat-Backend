@@ -63,7 +63,6 @@ public class ServicesServiceImpl implements ServicesService {
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Service not found for id => %d", id)));
 
         existingService.setName(servicesDto.getName());
-        existingService.setPrice(servicesDto.getPrice());
         existingService.setDescription(servicesDto.getDescription());
         existingService.setStatus(servicesDto.getStatus());
 
@@ -75,7 +74,6 @@ public class ServicesServiceImpl implements ServicesService {
         return ServicesDto.builder()
                 .id(services.getId())
                 .name(services.getName())
-                .price(services.getPrice())
                 .description(services.getDescription())
                 .status(services.getStatus())
                 .build();
@@ -85,7 +83,6 @@ public class ServicesServiceImpl implements ServicesService {
         return Services.builder()
                 .id(servicesDto.getId())
                 .name(servicesDto.getName())
-                .price(servicesDto.getPrice())
                 .description(servicesDto.getDescription())
                 .status(servicesDto.getStatus())
                 .build();

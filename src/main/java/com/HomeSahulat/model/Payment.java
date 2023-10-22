@@ -1,5 +1,6 @@
 package com.HomeSahulat.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     @CreationTimestamp
     private LocalDateTime createdAt;
 

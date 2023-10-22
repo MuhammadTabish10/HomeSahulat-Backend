@@ -19,13 +19,8 @@ public class ServicesDto {
     @NotBlank(message = "Name cannot be blank")
     private String name;
 
-    @NotNull(message = "Price cannot be null")
-    @PositiveOrZero(message = "Price must be a positive number or zero")
-    private Double price;
-
     @NotBlank(message = "Description cannot be blank")
     private String description;
 
-    @NotNull(message = "Status cannot be null")
     private Boolean status;
 }
