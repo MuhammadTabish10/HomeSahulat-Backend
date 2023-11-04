@@ -8,9 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -26,33 +24,25 @@ public class UserDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
-    @NotBlank(message = "Name cannot be blank")
     private String name;
 
     @NotBlank(message = "Password cannot be blank")
     private String password;
 
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Invalid email format")
     private String email;
 
-    @NotBlank(message = "First name cannot be blank")
     private String firstName;
-
-    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
 
     @NotBlank(message = "Phone cannot be blank")
-    @Pattern(regexp = "\\d{10}", message = "Invalid phone number")
+    @Pattern(regexp = "\\d{11}", message = "Invalid phone number")
     private String phone;
 
     private String profilePictureUrl;
     private String deviceId;
-
-    @NotNull(message = "Location cannot be null")
+    private String otp;
+    private Boolean otpFlag;
     private Location location;
-
     private Boolean status;
-
     private Set<Role> roles = new HashSet<>();
 }

@@ -1,5 +1,6 @@
 package com.HomeSahulat.service.impl;
 
+import com.HomeSahulat.config.otp.InfoBip;
 import com.HomeSahulat.dto.UserDto;
 import com.HomeSahulat.exception.RecordNotFoundException;
 import com.HomeSahulat.model.Role;
@@ -11,21 +12,28 @@ import com.HomeSahulat.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.HomeSahulat.Util.Helper.formatPhoneNumber;
+import static com.HomeSahulat.Util.Helper.generateRandomOTP;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final HttpServletRequest request;
+    private final InfoBip infoBip;
     private final RoleRepository roleRepository;
     private final LocationRepository locationRepository;
 
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository, LocationRepository locationRepository) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, HttpServletRequest request, InfoBip infoBip, RoleRepository roleRepository, LocationRepository locationRepository) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.request = request;
+        this.infoBip = infoBip;
         this.roleRepository = roleRepository;
         this.locationRepository = locationRepository;
     }
@@ -33,24 +41,49 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto registerUser(UserDto userdto) {
+        String otp = generateRandomOTP();
+        String otpMessage = "Your OTP is: " + otp;
+
         User user = toEntity(userdto);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setStatus(true);
+        user.setOtpFlag(false);
 
-        user.setLocation((locationRepository.findById(user.getLocation().getId())
-                .orElseThrow(() -> new RecordNotFoundException(String.format("Location not found for id => %d", user.getLocation().getId())))));
-
-        Set<Role> roleList = new HashSet<>();
-        for(Role role: user.getRoles()){
-            roleRepository.findById(role.getId())
-                    .orElseThrow(()-> new RecordNotFoundException("Role not found"));
-            roleList.add(role);
+        if(userdto.getLocation() != null){
+            user.setLocation((locationRepository.findById(user.getLocation().getId())
+                    .orElseThrow(() -> new RecordNotFoundException(String.format("Location not found for id => %d", user.getLocation().getId())))));
         }
 
-        user.setRoles(roleList);
-        userRepository.save(user);
-        return toDto(user);
+        if(userdto.getRoles() != null){
+            Set<Role> roleList = new HashSet<>();
+            for(Role role: user.getRoles()){
+                roleRepository.findById(role.getId())
+                        .orElseThrow(()-> new RecordNotFoundException("Role not found"));
+                roleList.add(role);
+            }
+            user.setRoles(roleList);
+        }
+
+        String phoneNumber = formatPhoneNumber(userdto.getPhone());
+        boolean otpCheck = infoBip.sendSMS("HomeSahulat", phoneNumber, otpMessage);
+
+        if (otpCheck) {
+            user.setOtp(bCryptPasswordEncoder.encode(otp));
+            user.setOtpFlag(true);
+            userRepository.save(user);
+            return toDto(user);
+        } else {
+            throw new RecordNotFoundException("Registration Failed, OTP not sent");
+        }
     }
+
+    @Override
+    public Boolean checkOtpVerification(Long id, String otp) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("User not found for id => %d", id)));
+        return bCryptPasswordEncoder.matches(otp, user.getOtp());
+    }
+
 
     @Override
     public List<UserDto> getAll() {
@@ -100,6 +133,8 @@ public class UserServiceImpl implements UserService {
         existingUser.setPhone(userDto.getPhone());
         existingUser.setProfilePictureUrl(userDto.getProfilePictureUrl());
         existingUser.setDeviceId(userDto.getDeviceId());
+        existingUser.setOtp(userDto.getOtp());
+        existingUser.setOtpFlag(userDto.getOtpFlag());
 
         existingUser.setLocation(locationRepository.findById(userDto.getLocation().getId())
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Location not found for id => %d", userDto.getLocation().getId()))));
@@ -128,6 +163,8 @@ public class UserServiceImpl implements UserService {
                 .phone(user.getPhone())
                 .profilePictureUrl(user.getProfilePictureUrl())
                 .deviceId(user.getDeviceId())
+                .otp(user.getOtp())
+                .otpFlag(user.getOtpFlag())
                 .location(user.getLocation())
                 .roles(user.getRoles())
                 .status(user.getStatus())
@@ -146,6 +183,8 @@ public class UserServiceImpl implements UserService {
                 .phone(userDto.getPhone())
                 .profilePictureUrl(userDto.getProfilePictureUrl())
                 .deviceId(userDto.getDeviceId())
+                .otp(userDto.getOtp())
+                .otpFlag(userDto.getOtpFlag())
                 .location(userDto.getLocation())
                 .roles(userDto.getRoles())
                 .status(userDto.getStatus())

@@ -36,6 +36,8 @@ public class User {
     private String phone;
     private String profilePictureUrl;
     private String deviceId;
+    private String otp;
+    private Boolean otpFlag;
     private Boolean status;
 
     @JsonIgnore
@@ -49,3 +51,4 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 }
+

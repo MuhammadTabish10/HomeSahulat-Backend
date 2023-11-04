@@ -7,7 +7,6 @@ import com.HomeSahulat.dto.UserDto;
 import com.HomeSahulat.service.UserService;
 import com.HomeSahulat.service.impl.MyUserDetailServiceImplementation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,9 +48,13 @@ public class LoginController {
     }
 
     @PostMapping("/signup")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> signup(@Valid @RequestBody UserDto userdto) {
         userService.registerUser(userdto);
         return ResponseEntity.ok("User registered successfully.");
+    }
+
+    @GetMapping("/signup/user/{id}/otp-verification/{otp}")
+    public ResponseEntity<Boolean> otpVerification(@PathVariable Long id, @PathVariable String otp) {
+        return ResponseEntity.ok(userService.checkOtpVerification(id,otp));
     }
 }
