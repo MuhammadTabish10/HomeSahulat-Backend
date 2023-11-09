@@ -38,6 +38,9 @@ public class CustomUserDetail implements UserDetails {
     public Long getUserId(){
         return this.user.getId();
     }
+    public String getPhone(){
+        return this.user.getPhone();
+    }
 
     @Override
     public String getPassword() {

@@ -12,8 +12,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 @Builder
 public class LoginCredentials {
-    @NotBlank(message = "Username cannot be blank")
-    private String name;
+    @NotBlank(message = "PhoneNumber cannot be blank")
+    private String phone;
 
     @NotBlank(message = "Password cannot be blank")
     private String password;

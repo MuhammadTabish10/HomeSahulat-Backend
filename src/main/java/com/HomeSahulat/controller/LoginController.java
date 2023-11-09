@@ -35,22 +35,29 @@ public class LoginController {
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginCredentials loginCredentials) throws Exception {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginCredentials.getName(), loginCredentials.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginCredentials.getPhone(), loginCredentials.getPassword())
             );
         } catch (Exception e) {
-            throw new BadCredentialsException("Incorrect Username or Password! ", e);
+            throw new BadCredentialsException("Incorrect PhoneNumber or Password! ", e);
         }
 
-        UserDetails userDetails = myUserDetailService.loadUserByUsername(loginCredentials.getName());
+        UserDetails userDetails = myUserDetailService.loadUserByUsername(loginCredentials.getPhone());
         String jwtToken = jwtUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwtToken));
     }
 
+
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@Valid @RequestBody UserDto userdto) {
-        userService.registerUser(userdto);
-        return ResponseEntity.ok("User registered successfully.");
+    public ResponseEntity<UserDto> signup(@Valid @RequestBody UserDto userdto) {
+        UserDto user = userService.registerUser(userdto);
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/signup/resend-otp/user/{id}")
+    public ResponseEntity<UserDto> resendOtp(@PathVariable Long id) {
+        UserDto user = userService.resendOtp(id);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/signup/user/{id}/otp-verification/{otp}")

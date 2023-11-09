@@ -69,7 +69,6 @@ public class UserServiceImpl implements UserService {
 
         if (otpCheck) {
             user.setOtp(bCryptPasswordEncoder.encode(otp));
-            user.setOtpFlag(true);
             userRepository.save(user);
             return toDto(user);
         } else {
@@ -77,11 +76,37 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public Boolean checkOtpVerification(Long id, String otp) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("User not found for id => %d", id)));
-        return bCryptPasswordEncoder.matches(otp, user.getOtp());
+
+        boolean otpCheck = bCryptPasswordEncoder.matches(otp, user.getOtp());
+        if(otpCheck){
+            userRepository.setOtpFlagTrue(id);
+        }
+        return otpCheck;
+    }
+
+    @Override
+    public UserDto resendOtp(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("User not found for id => %d", id)));
+
+        String otp = generateRandomOTP();
+        String otpMessage = "Your OTP is: " + otp;
+
+        String phoneNumber = formatPhoneNumber(user.getPhone());
+        boolean otpCheck = infoBip.sendSMS("HomeSahulat", phoneNumber, otpMessage);
+
+        if (otpCheck) {
+            user.setOtp(bCryptPasswordEncoder.encode(otp));
+            userRepository.save(user);
+            return toDto(user);
+        } else {
+            throw new RecordNotFoundException("OTP not sent");
+        }
     }
 
 

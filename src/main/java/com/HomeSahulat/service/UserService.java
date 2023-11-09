@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserService {
     UserDto registerUser(UserDto userdto);
     Boolean checkOtpVerification(Long id, String otp);
+    UserDto resendOtp(Long id);
     List<UserDto> getAll();
     UserDto findById(Long id);
     void deleteById(Long id);

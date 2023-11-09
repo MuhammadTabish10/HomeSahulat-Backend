@@ -14,4 +14,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.status = false WHERE u.id = :id")
     void setStatusInactive(@Param("id") Long id);
+
+    @Modifying
+    @Query("UPDATE User u SET u.otpFlag = true WHERE u.id = :id")
+    void setOtpFlagTrue(@Param("id") Long id);
+
+    User findByPhone(String phone);
 }
