@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByName(String username);
+    User findByPhoneAndPassword(String phone, String password);
 
     @Modifying
     @Query("UPDATE User u SET u.status = false WHERE u.id = :id")
