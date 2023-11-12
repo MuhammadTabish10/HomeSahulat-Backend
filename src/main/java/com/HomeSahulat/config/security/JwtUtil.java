@@ -33,29 +33,6 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-
-//    public String generateToken(UserDetails userDetails) {
-//        Map<String, Object> claims = new HashMap<>();
-//
-//        // Extract roles and permissions into separate lists
-//        List<String> roles = new ArrayList<>();
-//        List<String> permissions = new ArrayList<>();
-//
-//        userDetails.getAuthorities().forEach(authority -> {
-//            String authorityName = authority.getAuthority();
-//            if (authorityName.startsWith("ROLE_")) {
-//                roles.add(authorityName.substring(5));
-//            } else {
-//                permissions.add(authorityName);
-//            }
-//        });
-//
-//        claims.put("ROLES", roles);
-//        claims.put("PERMISSIONS", permissions);
-//
-//        return createToken(claims, userDetails.getUsername());
-//    }
-
     public String generateToken(UserDetails userDetails) {
         if (userDetails instanceof CustomUserDetail) {
             CustomUserDetail customUserDetail = (CustomUserDetail) userDetails;
