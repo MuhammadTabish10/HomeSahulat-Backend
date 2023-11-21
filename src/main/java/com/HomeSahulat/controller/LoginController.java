@@ -38,7 +38,7 @@ public class LoginController {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginCredentials.getPhone(), loginCredentials.getPassword())
             );
-        } catch (Exception e) {
+        } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Incorrect PhoneNumber or Password! ", e);
         }
 
