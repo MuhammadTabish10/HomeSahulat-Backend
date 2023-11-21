@@ -31,6 +31,13 @@ public class ServiceProviderController {
         return ResponseEntity.ok(serviceProviderDtoList);
     }
 
+    @GetMapping("/service-provider/service/{service}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<ServiceProviderDto>> getAllServiceProvidersByService(@PathVariable String service) {
+        List<ServiceProviderDto> serviceProviderDtoList = serviceProviderService.getServiceProviderByService(service);
+        return ResponseEntity.ok(serviceProviderDtoList);
+    }
+
     @GetMapping("/service-provider/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ServiceProviderDto> getServiceProviderById(@PathVariable Long id) {
