@@ -4,6 +4,7 @@ import com.HomeSahulat.config.security.JwtUtil;
 import com.HomeSahulat.dto.AuthenticationResponse;
 import com.HomeSahulat.dto.LoginCredentials;
 import com.HomeSahulat.dto.UserDto;
+import com.HomeSahulat.exception.RecordNotFoundException;
 import com.HomeSahulat.service.UserService;
 import com.HomeSahulat.service.impl.MyUserDetailServiceImplementation;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +42,14 @@ public class LoginController {
             throw new BadCredentialsException("Incorrect PhoneNumber or Password! ", e);
         }
 
-        UserDetails userDetails = myUserDetailService.loadUserByUsername(loginCredentials.getPhone());
-        String jwtToken = jwtUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwtToken));
+        if(userService.checkUserVerified(loginCredentials)){
+            UserDetails userDetails = myUserDetailService.loadUserByUsername(loginCredentials.getPhone());
+            String jwtToken = jwtUtil.generateToken(userDetails);
+            return ResponseEntity.ok(new AuthenticationResponse(jwtToken));
+        }
+        else {
+            throw new RecordNotFoundException("User not verified");
+        }
     }
 
 

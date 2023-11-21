@@ -7,9 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ServiceProviderRepository extends JpaRepository<ServiceProvider,Long> {
     @Modifying
     @Query("UPDATE ServiceProvider sp SET sp.status = false WHERE sp.id = :id")
     void setStatusInactive(@Param("id") Long id);
-}
+
+    @Query("SELECT sp FROM ServiceProvider sp JOIN sp.services s WHERE s.name = :serviceName AND sp.status = true")
+    List<ServiceProvider> findByServiceNameAndStatusTrue(@Param("serviceName") String serviceName);}

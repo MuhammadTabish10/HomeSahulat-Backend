@@ -33,29 +33,6 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-
-//    public String generateToken(UserDetails userDetails) {
-//        Map<String, Object> claims = new HashMap<>();
-//
-//        // Extract roles and permissions into separate lists
-//        List<String> roles = new ArrayList<>();
-//        List<String> permissions = new ArrayList<>();
-//
-//        userDetails.getAuthorities().forEach(authority -> {
-//            String authorityName = authority.getAuthority();
-//            if (authorityName.startsWith("ROLE_")) {
-//                roles.add(authorityName.substring(5));
-//            } else {
-//                permissions.add(authorityName);
-//            }
-//        });
-//
-//        claims.put("ROLES", roles);
-//        claims.put("PERMISSIONS", permissions);
-//
-//        return createToken(claims, userDetails.getUsername());
-//    }
-
     public String generateToken(UserDetails userDetails) {
         if (userDetails instanceof CustomUserDetail) {
             CustomUserDetail customUserDetail = (CustomUserDetail) userDetails;
@@ -92,8 +69,8 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public Boolean validateToken(String token, CustomUserDetail customUserDetail) {
+        final String phone = extractUsername(token);
+        return (phone.equals(customUserDetail.getPhone()) && !isTokenExpired(token));
     }
 }

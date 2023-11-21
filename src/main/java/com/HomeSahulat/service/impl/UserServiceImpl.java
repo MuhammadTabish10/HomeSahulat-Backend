@@ -1,6 +1,7 @@
 package com.HomeSahulat.service.impl;
 
 import com.HomeSahulat.config.otp.InfoBip;
+import com.HomeSahulat.dto.LoginCredentials;
 import com.HomeSahulat.dto.UserDto;
 import com.HomeSahulat.exception.RecordNotFoundException;
 import com.HomeSahulat.model.Role;
@@ -75,6 +76,25 @@ public class UserServiceImpl implements UserService {
             throw new RecordNotFoundException("Registration Failed, OTP not sent");
         }
     }
+
+    @Override
+    @Transactional
+    public Boolean checkUserVerified(LoginCredentials loginCredentials) {
+        // Step 1: Retrieve the user by phone number
+        User user = userRepository.findByPhone(loginCredentials.getPhone());
+
+        // Step 2: Check if the user exists and the password matches
+        if (user != null && bCryptPasswordEncoder.matches(loginCredentials.getPassword(), user.getPassword())) {
+            if (!user.getOtpFlag()) {
+                throw new RecordNotFoundException("User is not verified");
+            }
+            return true;
+        } else {
+            // User not found or password doesn't match
+            return false;
+        }
+    }
+
 
     @Transactional
     @Override

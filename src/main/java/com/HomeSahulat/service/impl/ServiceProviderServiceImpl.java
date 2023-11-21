@@ -71,6 +71,18 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     }
 
     @Override
+    public List<ServiceProviderDto> getServiceProviderByService(String service) {
+        List<ServiceProvider> serviceProviderList = serviceProviderRepository.findByServiceNameAndStatusTrue(service);
+        List<ServiceProviderDto> serviceProviderDtoList = new ArrayList<>();
+
+        for (ServiceProvider serviceProvider : serviceProviderList) {
+            ServiceProviderDto serviceProviderDto = toDto(serviceProvider);
+            serviceProviderDtoList.add(serviceProviderDto);
+        }
+        return serviceProviderDtoList;
+    }
+
+    @Override
     public ServiceProviderDto findById(Long id) {
         ServiceProvider serviceProvider = serviceProviderRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Service Provider not found for id => %d", id)));
