@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Builder
 @AllArgsConstructor
@@ -28,6 +30,9 @@ public class Booking {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate appointmentDate;
+
+    @JsonFormat(pattern = "HH:mm:ss")
+    private LocalTime appointmentTime;
 
     private Boolean status;
 

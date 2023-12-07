@@ -1,5 +1,6 @@
 package com.HomeSahulat.service.impl;
 
+import com.HomeSahulat.Util.Helper;
 import com.HomeSahulat.config.otp.InfoBip;
 import com.HomeSahulat.dto.LoginCredentials;
 import com.HomeSahulat.dto.UserDto;
@@ -13,7 +14,6 @@ import com.HomeSahulat.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,16 +24,16 @@ import static com.HomeSahulat.Util.Helper.generateRandomOTP;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final Helper helper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final HttpServletRequest request;
     private final InfoBip infoBip;
     private final RoleRepository roleRepository;
     private final LocationRepository locationRepository;
 
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, HttpServletRequest request, InfoBip infoBip, RoleRepository roleRepository, LocationRepository locationRepository) {
+    public UserServiceImpl(UserRepository userRepository, Helper helper, BCryptPasswordEncoder bCryptPasswordEncoder, InfoBip infoBip, RoleRepository roleRepository, LocationRepository locationRepository) {
         this.userRepository = userRepository;
+        this.helper = helper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.request = request;
         this.infoBip = infoBip;
         this.roleRepository = roleRepository;
         this.locationRepository = locationRepository;
@@ -194,6 +194,11 @@ public class UserServiceImpl implements UserService {
         existingUser.setRoles(roleList);
         User updatedUser = userRepository.save(existingUser);
         return toDto(updatedUser);
+    }
+
+    @Override
+    public UserDto getLoggedInUser() {
+        return toDto(helper.getCurrentUser());
     }
 
     public UserDto toDto(User user) {

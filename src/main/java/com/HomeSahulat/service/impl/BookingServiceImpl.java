@@ -76,6 +76,7 @@ public class BookingServiceImpl implements BookingService {
 
         existingBooking.setStatus(bookingDto.getStatus());
         existingBooking.setAppointmentDate(bookingDto.getAppointmentDate());
+        existingBooking.setAppointmentTime(bookingDto.getAppointmentTime());
         existingBooking.setUser(userRepository.findById(bookingDto.getUser().getId())
                 .orElseThrow(() -> new RecordNotFoundException(String.format("User not found for id => %d", bookingDto.getUser().getId()))));
         existingBooking.setServiceProvider(serviceProviderRepository.findById(bookingDto.getServiceProvider().getId())
@@ -91,6 +92,7 @@ public class BookingServiceImpl implements BookingService {
                 .id(booking.getId())
                 .createdAt(booking.getCreatedAt())
                 .appointmentDate(booking.getAppointmentDate())
+                .appointmentTime(booking.getAppointmentTime())
                 .user(booking.getUser())
                 .serviceProvider(booking.getServiceProvider())
                 .status(booking.getStatus())
@@ -102,6 +104,7 @@ public class BookingServiceImpl implements BookingService {
                 .id(bookingDto.getId())
                 .createdAt(bookingDto.getCreatedAt())
                 .appointmentDate(bookingDto.getAppointmentDate())
+                .appointmentTime(bookingDto.getAppointmentTime())
                 .user(bookingDto.getUser())
                 .serviceProvider(bookingDto.getServiceProvider())
                 .status(bookingDto.getStatus())
