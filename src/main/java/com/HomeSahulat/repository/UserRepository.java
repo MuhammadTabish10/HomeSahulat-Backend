@@ -21,4 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void setOtpFlagTrue(@Param("id") Long id);
 
     User findByPhone(String phone);
+
+    User findByPhoneAndStatusIsTrue(String phone);
 }

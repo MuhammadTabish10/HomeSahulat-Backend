@@ -32,6 +32,13 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
+    @GetMapping("/user/logged-in")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UserDto> getLoggedInUser() {
+        UserDto userDto = userService.getLoggedInUser();
+        return ResponseEntity.ok(userDto);
+    }
+
     @DeleteMapping("/user/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
