@@ -31,6 +31,13 @@ public class ReviewController {
         return ResponseEntity.ok(reviewDtoList);
     }
 
+    @GetMapping("/review/service-provider/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<ReviewDto>> getAllReviewsByServiceProvider(@PathVariable Long id) {
+        List<ReviewDto> reviewDtoList = reviewService.getAll();
+        return ResponseEntity.ok(reviewDtoList);
+    }
+
     @GetMapping("/review/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ReviewDto> getReviewById(@PathVariable Long id) {
