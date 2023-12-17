@@ -54,6 +54,18 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<ReviewDto> getAllReviewsByServiceProvider(Long id) {
+        List<Review> reviewList = reviewRepository.findAllByServiceProvider_Id(id);
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+
+        for (Review review : reviewList) {
+            ReviewDto reviewDto = toDto(review);
+            reviewDtoList.add(reviewDto);
+        }
+        return reviewDtoList;
+    }
+
+    @Override
     public ReviewDto findById(Long id) {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Review not found for id => %d", id)));
