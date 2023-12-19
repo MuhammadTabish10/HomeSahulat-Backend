@@ -38,6 +38,11 @@ public class User {
     private String deviceId;
     private String otp;
     private Boolean otpFlag;
+    private String resetCode;
+
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
+    private LocalDateTime resetCodeTimestamp;
+
     private Boolean status;
 
     @JsonIgnore

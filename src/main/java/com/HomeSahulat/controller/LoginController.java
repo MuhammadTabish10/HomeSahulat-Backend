@@ -7,6 +7,7 @@ import com.HomeSahulat.dto.UserDto;
 import com.HomeSahulat.exception.RecordNotFoundException;
 import com.HomeSahulat.service.UserService;
 import com.HomeSahulat.service.impl.MyUserDetailServiceImplementation;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -68,5 +69,20 @@ public class LoginController {
     @GetMapping("/signup/user/{id}/otp-verification/{otp}")
     public ResponseEntity<Boolean> otpVerification(@PathVariable Long id, @PathVariable String otp) {
         return ResponseEntity.ok(userService.checkOtpVerification(id,otp));
+    }
+
+    @PostMapping("user/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestParam String email) {
+        userService.forgotPassword(email);
+        return new ResponseEntity<>("Password reset email sent successfully.", HttpStatus.OK);
+    }
+
+    @PostMapping("user/reset-password")
+    public ResponseEntity<String> resetPassword(
+            @RequestParam String email,
+            @RequestParam String resetCode,
+            @RequestParam String newPassword) {
+        userService.resetPassword(email, resetCode, newPassword);
+        return new ResponseEntity<>("Password reset successfully.", HttpStatus.OK);
     }
 }

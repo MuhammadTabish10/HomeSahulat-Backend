@@ -7,7 +7,10 @@ import com.HomeSahulat.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Random;
+import java.util.UUID;
 
 @Component
 public class Helper {
@@ -50,4 +53,19 @@ public class Helper {
         }
     }
 
+    public boolean isValidResetCode(User user, String resetCode) {
+        if (user.getResetCode() == null || !user.getResetCode().equals(resetCode)) {
+            return false;
+        }
+        LocalDateTime resetCodeTimestamp = user.getResetCodeTimestamp();
+        LocalDateTime currentTimestamp = LocalDateTime.now();
+        Duration duration = Duration.between(resetCodeTimestamp, currentTimestamp);
+        long expirationTimeInMinutes = 60;
+        return duration.toMinutes() <= expirationTimeInMinutes;
+    }
+
+    public String generateResetCode() {
+        String uuid = UUID.randomUUID().toString();
+        return uuid.substring(0, 6);
+    }
 }

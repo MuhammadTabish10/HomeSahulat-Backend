@@ -1,9 +1,11 @@
 package com.HomeSahulat.service.impl;
 
+import com.HomeSahulat.Util.EmailUtils;
 import com.HomeSahulat.Util.Helper;
 import com.HomeSahulat.config.otp.InfoBip;
 import com.HomeSahulat.dto.LoginCredentials;
 import com.HomeSahulat.dto.UserDto;
+import com.HomeSahulat.exception.InvalidResetCodeException;
 import com.HomeSahulat.exception.RecordNotFoundException;
 import com.HomeSahulat.model.Role;
 import com.HomeSahulat.model.User;
@@ -15,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,14 +30,16 @@ public class UserServiceImpl implements UserService {
     private final Helper helper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final InfoBip infoBip;
+    private final EmailUtils emailUtils;
     private final RoleRepository roleRepository;
     private final LocationRepository locationRepository;
 
-    public UserServiceImpl(UserRepository userRepository, Helper helper, BCryptPasswordEncoder bCryptPasswordEncoder, InfoBip infoBip, RoleRepository roleRepository, LocationRepository locationRepository) {
+    public UserServiceImpl(UserRepository userRepository, Helper helper, BCryptPasswordEncoder bCryptPasswordEncoder, InfoBip infoBip, EmailUtils emailUtils, RoleRepository roleRepository, LocationRepository locationRepository) {
         this.userRepository = userRepository;
         this.helper = helper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.infoBip = infoBip;
+        this.emailUtils = emailUtils;
         this.roleRepository = roleRepository;
         this.locationRepository = locationRepository;
     }
@@ -201,6 +206,38 @@ public class UserServiceImpl implements UserService {
         return toDto(helper.getCurrentUser());
     }
 
+    @Override
+    @Transactional
+    public void forgotPassword(String userEmail) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RecordNotFoundException("User not found"));
+
+        String resetCode = helper.generateResetCode();
+
+        // Save reset code and timestamp in the database
+        user.setResetCode(resetCode);
+        user.setResetCodeTimestamp(LocalDateTime.now());
+        userRepository.save(user);
+
+        // Send email with reset code
+        emailUtils.sendPasswordResetEmail(user, resetCode);
+    }
+
+    @Override
+    @Transactional
+    public void resetPassword(String userEmail, String resetCode, String newPassword) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RecordNotFoundException("User not found"));
+
+        // Check if reset code is valid and not expired
+        if (helper.isValidResetCode(user, resetCode)) {
+            user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userRepository.save(user);
+        } else {
+            throw new InvalidResetCodeException("Invalid or expired reset code");
+        }
+    }
+
     public UserDto toDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
@@ -215,6 +252,8 @@ public class UserServiceImpl implements UserService {
                 .deviceId(user.getDeviceId())
                 .otp(user.getOtp())
                 .otpFlag(user.getOtpFlag())
+                .resetCode(user.getResetCode())
+                .resetCodeTimestamp(user.getResetCodeTimestamp())
                 .location(user.getLocation())
                 .roles(user.getRoles())
                 .status(user.getStatus())
@@ -235,6 +274,8 @@ public class UserServiceImpl implements UserService {
                 .deviceId(userDto.getDeviceId())
                 .otp(userDto.getOtp())
                 .otpFlag(userDto.getOtpFlag())
+                .resetCode(userDto.getResetCode())
+                .resetCodeTimestamp(userDto.getResetCodeTimestamp())
                 .location(userDto.getLocation())
                 .roles(userDto.getRoles())
                 .status(userDto.getStatus())

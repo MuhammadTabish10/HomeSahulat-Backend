@@ -69,4 +69,29 @@ public class EmailUtils {
             System.err.println("Error sending email: " + e.getMessage());
         }
     }
+
+    @Async
+    public void sendPasswordResetEmail(User user, String resetCode) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(sender);
+            helper.setTo(user.getEmail());
+            helper.setSubject("Password Reset Request");
+
+            String emailContent = "Dear " + user.getFirstName() + ",\n\n"
+                    + "You have requested to reset your password. Please use the following code in the app to proceed with the password reset:\n\n"
+                    + "ResetCode: " + resetCode + "\n\n"
+                    + "If you did not request a password reset, please ignore this email.\n\n"
+                    + "Best regards,\n"
+                    + "HomeSahulat Team";
+
+            helper.setText(emailContent);
+            javaMailSender.send(message);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            System.err.println("Error sending email: " + e.getMessage());
+        }
+    }
 }
