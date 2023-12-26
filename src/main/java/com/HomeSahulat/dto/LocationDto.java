@@ -15,9 +15,6 @@ import javax.validation.constraints.NotNull;
 public class LocationDto {
     private Long id;
 
-    @NotBlank(message = "Name cannot be blank")
-    private String name;
-
     @NotBlank(message = "Address cannot be blank")
     private String address;
 
@@ -33,10 +30,8 @@ public class LocationDto {
     @NotNull(message = "Postal code cannot be null")
     private Integer postalCode;
 
-    @NotNull(message = "Latitude cannot be null")
     private Double latitude;
 
-    @NotNull(message = "Longitude cannot be null")
     private Double longitude;
 
     private Boolean status;

@@ -31,9 +31,6 @@ public class UserDto {
 
     private String email;
 
-    private String firstName;
-    private String lastName;
-
     @NotBlank(message = "Phone cannot be blank")
     @Pattern(regexp = "\\d{11}", message = "Invalid phone number")
     private String phone;

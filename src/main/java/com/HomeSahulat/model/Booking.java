@@ -35,6 +35,7 @@ public class Booking {
     private LocalTime appointmentTime;
 
     private Boolean status;
+    private String bookingStatus;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

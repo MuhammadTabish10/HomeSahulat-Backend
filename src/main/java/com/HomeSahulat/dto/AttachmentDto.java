@@ -18,16 +18,8 @@ import java.time.LocalDateTime;
 public class AttachmentDto {
     private Long id;
 
-    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
-
-    @NotBlank(message = "Name cannot be blank")
-    private String name;
-
     @NotBlank(message = "File URL cannot be blank")
-    private String fileUrl;
-
-    private Boolean status;
+    private String cnicUrl;
 
     @NotNull(message = "ServiceProvider cannot be null")
     private ServiceProvider serviceProvider;

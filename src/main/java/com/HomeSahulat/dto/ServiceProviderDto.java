@@ -36,11 +36,9 @@ public class ServiceProviderDto {
     @PositiveOrZero(message = "Total experience must be a positive number or zero")
     private Double totalExperience;
 
-    @NotNull(message = "Total rating cannot be null")
     @PositiveOrZero(message = "Total rating must be a positive number or zero")
     private Double totalRating;
 
-    @NotNull(message = "At work status cannot be null")
     private Boolean atWork;
 
     @NotNull(message = "Shop status cannot be null")
