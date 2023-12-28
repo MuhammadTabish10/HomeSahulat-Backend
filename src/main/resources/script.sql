@@ -29,16 +29,16 @@ VALUES
     ('Electrician', 'Electrical repairs and installations', true),
     ('Carpenter', 'Carpenter services', true);
 
-INSERT INTO service_provider (created_at, description, hourly_price, total_experience, total_rating, at_work, have_shop, status, user_id, service_id)
+INSERT INTO service_provider (created_at, description, hourly_price, total_experience, total_rating, at_work, have_shop, status, user_id, service_id, cnic_no)
 VALUES
-    ('2023-02-02 08:15:00', 'Professional plumber', 30.0, 8.0, 4.8, true, true, true, 2, 1),
-    ('2023-03-03 09:30:00', 'Fine electrician', 20.0, 3.0, 4.2, true, false, true, 3, 2),
-    ('2023-04-04 11:15:00', 'Skilled electrician', 35.0, 7.0, 4.7, true, true, true, 4, 2),
-    ('2023-04-04 11:15:00', 'Skilled carpenter', 45.0, 6.0, 4.8, true, true, true, 5, 3),
-    ('2023-04-04 11:15:00', 'Very Skilled electrician', 55.0, 8.8, 4.9, true, true, true, 7, 2),
-    ('2023-04-04 11:15:00', 'Very Skilled carpenter', 60.0, 9.0, 4.6, true, true, true, 6, 3),
-    ('2023-04-04 11:15:00', 'Good carpenter', 20.0, 2.0, 3.6, true, true, true, 10, 3),
-    ('2023-04-04 11:15:00', 'Ok carpenter', 10.0, 1.0, 2.6, true, true, true, 9, 3);
+    ('2023-02-02 08:15:00', 'Professional plumber', 30.0, 8.0, 4.8, true, true, true, 2, 1,'094637281'),
+    ('2023-03-03 09:30:00', 'Fine electrician', 20.0, 3.0, 4.2, true, false, true, 3, 2,'094637281'),
+    ('2023-04-04 11:15:00', 'Skilled electrician', 35.0, 7.0, 4.7, true, true, true, 4, 2,'094637281'),
+    ('2023-04-04 11:15:00', 'Skilled carpenter', 45.0, 6.0, 4.8, true, true, true, 5, 3,'094637281'),
+    ('2023-04-04 11:15:00', 'Very Skilled electrician', 55.0, 8.8, 4.9, true, true, true, 7, 2,'094637281'),
+    ('2023-04-04 11:15:00', 'Very Skilled carpenter', 60.0, 9.0, 4.6, true, true, true, 6, 3,'094637281'),
+    ('2023-04-04 11:15:00', 'Good carpenter', 20.0, 2.0, 3.6, true, true, true, 10, 3,'094637281'),
+    ('2023-04-04 11:15:00', 'Ok carpenter', 10.0, 1.0, 2.6, true, true, true, 9, 3,'094637281');
 
 INSERT INTO attachment (cnic_url, service_provider_id)
 VALUES

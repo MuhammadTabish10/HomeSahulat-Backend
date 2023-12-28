@@ -28,6 +28,9 @@ public class ServiceProviderDto {
     @NotBlank(message = "Description cannot be blank")
     private String description;
 
+    @NotBlank(message = "Cnic cannot be blank")
+    private String cnicNo;
+
     @NotNull(message = "Hourly price cannot be null")
     @PositiveOrZero(message = "Hourly price must be a positive number or zero")
     private Double hourlyPrice;
