@@ -28,6 +28,9 @@ public class ServiceProviderDto {
     @NotBlank(message = "Description cannot be blank")
     private String description;
 
+    @NotBlank(message = "Cnic cannot be blank")
+    private String cnicNo;
+
     @NotNull(message = "Hourly price cannot be null")
     @PositiveOrZero(message = "Hourly price must be a positive number or zero")
     private Double hourlyPrice;
@@ -36,11 +39,9 @@ public class ServiceProviderDto {
     @PositiveOrZero(message = "Total experience must be a positive number or zero")
     private Double totalExperience;
 
-    @NotNull(message = "Total rating cannot be null")
     @PositiveOrZero(message = "Total rating must be a positive number or zero")
     private Double totalRating;
 
-    @NotNull(message = "At work status cannot be null")
     private Boolean atWork;
 
     @NotNull(message = "Shop status cannot be null")

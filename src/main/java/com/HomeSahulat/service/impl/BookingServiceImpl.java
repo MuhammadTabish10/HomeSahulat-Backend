@@ -1,5 +1,6 @@
 package com.HomeSahulat.service.impl;
 
+import com.HomeSahulat.Util.EmailUtils;
 import com.HomeSahulat.dto.BookingDto;
 import com.HomeSahulat.exception.RecordNotFoundException;
 import com.HomeSahulat.model.Booking;
@@ -19,11 +20,13 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ServiceProviderRepository serviceProviderRepository;
+    private final EmailUtils emailUtils;
 
-    public BookingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository, ServiceProviderRepository serviceProviderRepository) {
+    public BookingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository, ServiceProviderRepository serviceProviderRepository, EmailUtils emailUtils) {
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
         this.serviceProviderRepository = serviceProviderRepository;
+        this.emailUtils = emailUtils;
     }
 
     @Override
@@ -31,6 +34,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto save(BookingDto bookingDto) {
         Booking booking = toEntity(bookingDto);
         booking.setStatus(true);
+        booking.setBookingStatus("Pending");
 
         booking.setUser(userRepository.findById(booking.getUser().getId())
                 .orElseThrow(() -> new RecordNotFoundException(String.format("User not found for id => %d", booking.getUser().getId()))));
@@ -38,6 +42,8 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Service Provider not found for id => %d", booking.getServiceProvider().getId()))));
 
         Booking createdBooking = bookingRepository.save(booking);
+        emailUtils.sendEmailForBooking(createdBooking.getUser(),createdBooking.getServiceProvider(),createdBooking,"user");
+        emailUtils.sendEmailForBooking(createdBooking.getUser(),createdBooking.getServiceProvider(),createdBooking,"serviceProvider");
         return toDto(createdBooking);
     }
 
@@ -96,6 +102,7 @@ public class BookingServiceImpl implements BookingService {
                 .user(booking.getUser())
                 .serviceProvider(booking.getServiceProvider())
                 .status(booking.getStatus())
+                .bookingStatus(booking.getBookingStatus())
                 .build();
     }
 
@@ -108,6 +115,7 @@ public class BookingServiceImpl implements BookingService {
                 .user(bookingDto.getUser())
                 .serviceProvider(bookingDto.getServiceProvider())
                 .status(bookingDto.getStatus())
+                .bookingStatus(bookingDto.getBookingStatus())
                 .build();
     }
 

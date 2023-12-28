@@ -3,8 +3,6 @@ package com.HomeSahulat.service.impl;
 import com.HomeSahulat.dto.ServiceProviderDto;
 import com.HomeSahulat.exception.RecordNotFoundException;
 import com.HomeSahulat.model.Attachment;
-import com.HomeSahulat.model.Review;
-import com.HomeSahulat.model.Role;
 import com.HomeSahulat.model.ServiceProvider;
 import com.HomeSahulat.repository.AttachmentRepository;
 import com.HomeSahulat.repository.ServiceProviderRepository;
@@ -49,7 +47,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         if(attachmentList != null && !attachmentList.isEmpty()){
             for (Attachment attachment : attachmentList) {
                 attachment.setServiceProvider(createdServiceProvider);
-                attachment.setStatus(true);
                 attachmentRepository.save(attachment);
             }
             createdServiceProvider.setAttachment(attachmentList);
@@ -135,9 +132,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
                     .filter(aValue -> aValue.getId().equals(newValue.getId())).findFirst();
             if (existingValue.isPresent()) {
                 Attachment existingAttachmentValue = existingValue.get();
-                existingAttachmentValue.setName(newValue.getName());
-                existingAttachmentValue.setFileUrl(newValue.getFileUrl());
-                existingAttachmentValue.setStatus(newValue.getStatus());
+                existingAttachmentValue.setCnicUrl(newValue.getCnicUrl());
             } else {
                 newValue.setServiceProvider(existingServiceProvider);
                 newValuesToAdd.add(newValue);
@@ -157,6 +152,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
                 .id(serviceProvider.getId())
                 .createdAt(serviceProvider.getCreatedAt())
                 .description(serviceProvider.getDescription())
+                .cnicNo(serviceProvider.getCnicNo())
                 .hourlyPrice(serviceProvider.getHourlyPrice())
                 .totalExperience(serviceProvider.getTotalExperience())
                 .totalRating(serviceProvider.getTotalRating())
@@ -174,6 +170,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
                 .id(serviceProviderDto.getId())
                 .createdAt(serviceProviderDto.getCreatedAt())
                 .description(serviceProviderDto.getDescription())
+                .cnicNo(serviceProviderDto.getCnicNo())
                 .hourlyPrice(serviceProviderDto.getHourlyPrice())
                 .totalExperience(serviceProviderDto.getTotalExperience())
                 .totalRating(serviceProviderDto.getTotalRating())

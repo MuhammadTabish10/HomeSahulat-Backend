@@ -31,8 +31,6 @@ public class User {
     private String name;
     private String password;
     private String email;
-    private String firstName;
-    private String lastName;
     private String phone;
     private String profilePictureUrl;
     private String deviceId;

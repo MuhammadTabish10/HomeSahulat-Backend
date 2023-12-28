@@ -26,7 +26,7 @@ public class EmailUtils {
     private String sender;
 
     @Async
-    public void sendEmail(User user, ServiceProvider serviceProvider, Booking booking, String userType) {
+    public void sendEmailForBooking(User user, ServiceProvider serviceProvider, Booking booking, String userType) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -35,7 +35,7 @@ public class EmailUtils {
 
             if(USER.equalsIgnoreCase(userType)){
                 helper.setTo(user.getEmail());
-                String greeting = "Dear " + user.getFirstName() + ",\n\n";
+                String greeting = "Dear " + user.getName() + ",\n\n";
                 String emailContent = greeting
                         + "Thank you for choosing HomeSahulat! Your service booking details are as follows:\n\n"
                         + "Service Provider: " + serviceProvider.getUser().getName() + "\n"
@@ -53,7 +53,7 @@ public class EmailUtils {
                 String greeting = "Dear " + serviceProvider.getUser().getName() + ",\n\n";
                 String emailContent = greeting
                         + "You have a new booking request from a customer. The details are as follows:\n\n"
-                        + "Customer Name: " + user.getFirstName() + " " + user.getLastName() + "\n"
+                        + "Customer Name: " + user.getName() + "\n"
                         + "Service: " + serviceProvider.getServices().getName() + "\n"
                         + "Appointment Date: " + booking.getAppointmentDate() + "\n"
                         + "Appointment Time: " + booking.getAppointmentTime() + "\n\n"
@@ -79,7 +79,7 @@ public class EmailUtils {
             helper.setTo(user.getEmail());
             helper.setSubject("Password Reset Request");
 
-            String emailContent = "Dear " + user.getFirstName() + ",\n\n"
+            String emailContent = "Dear " + user.getName() + ",\n\n"
                     + "You have requested to reset your password. Please use the following code in the app to proceed with the password reset:\n\n"
                     + "ResetCode: " + resetCode + "\n\n"
                     + "If you did not request a password reset, please ignore this email.\n\n"

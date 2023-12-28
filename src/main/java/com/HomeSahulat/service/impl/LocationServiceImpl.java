@@ -61,7 +61,6 @@ public class LocationServiceImpl implements LocationService {
         Location existingLocation = locationRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Location not found for id => %d", id)));
 
-        existingLocation.setName(locationDto.getName());
         existingLocation.setAddress(locationDto.getAddress());
         existingLocation.setCity(locationDto.getCity());
         existingLocation.setState(locationDto.getState());
@@ -78,7 +77,6 @@ public class LocationServiceImpl implements LocationService {
     public LocationDto toDto(Location location) {
         return LocationDto.builder()
                 .id(location.getId())
-                .name(location.getName())
                 .status(location.getStatus())
                 .address(location.getAddress())
                 .city(location.getCity())
@@ -93,7 +91,6 @@ public class LocationServiceImpl implements LocationService {
     public Location toEntity(LocationDto locationDto) {
         return Location.builder()
                 .id(locationDto.getId())
-                .name(locationDto.getName())
                 .status(locationDto.getStatus())
                 .address(locationDto.getAddress())
                 .city(locationDto.getCity())

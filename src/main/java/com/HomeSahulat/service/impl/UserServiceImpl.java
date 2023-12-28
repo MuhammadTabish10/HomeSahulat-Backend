@@ -175,10 +175,8 @@ public class UserServiceImpl implements UserService {
 
         existingUser.setStatus(userDto.getStatus());
         existingUser.setName(userDto.getName());
-        existingUser.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+        existingUser.setPassword(userDto.getPassword());
         existingUser.setEmail(userDto.getEmail());
-        existingUser.setFirstName(userDto.getFirstName());
-        existingUser.setLastName(userDto.getLastName());
         existingUser.setLocation(userDto.getLocation());
         existingUser.setPhone(userDto.getPhone());
         existingUser.setProfilePictureUrl(userDto.getProfilePictureUrl());
@@ -245,8 +243,6 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .password(user.getPassword())
                 .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
                 .phone(user.getPhone())
                 .profilePictureUrl(user.getProfilePictureUrl())
                 .deviceId(user.getDeviceId())
@@ -267,8 +263,6 @@ public class UserServiceImpl implements UserService {
                 .name(userDto.getName())
                 .password(userDto.getPassword())
                 .email(userDto.getEmail())
-                .firstName(userDto.getFirstName())
-                .lastName(userDto.getLastName())
                 .phone(userDto.getPhone())
                 .profilePictureUrl(userDto.getProfilePictureUrl())
                 .deviceId(userDto.getDeviceId())

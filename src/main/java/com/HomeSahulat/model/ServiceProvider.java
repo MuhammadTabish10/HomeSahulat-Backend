@@ -28,6 +28,7 @@
         private LocalDateTime createdAt;
 
         private String description;
+        private String cnicNo;
         private Double hourlyPrice;
         private Double totalExperience;
         private Double totalRating;

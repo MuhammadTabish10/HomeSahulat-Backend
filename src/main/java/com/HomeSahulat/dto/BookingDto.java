@@ -33,6 +33,7 @@ public class BookingDto {
     private LocalTime appointmentTime;
 
     private Boolean status;
+    private String bookingStatus;
 
     @NotNull(message = "User cannot be null")
     private User user;

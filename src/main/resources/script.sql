@@ -1,25 +1,25 @@
-INSERT INTO location (name, address, city, state, postal_code, country, latitude, longitude, status)
+INSERT INTO location (address, city, state, postal_code, country, latitude, longitude, status)
 VALUES
-    ('Home', '123 Main St', 'Lahore', 'Punjab', 54000, 'Pakistan', 31.5497, 74.3436, true),
-    ('Office', '456 Business Rd', 'Karachi', 'Sindh', 75500, 'Pakistan', 24.8607, 67.0011, true),
-    ('Garden', '789 Green Ave', 'Islamabad', 'ICT', 44000, 'Pakistan', 33.6844, 73.0479, true),
-    ('Shop', '101 Commercial St', 'Faisalabad', 'Punjab', 38000, 'Pakistan', 31.4504, 73.1350, true),
-    ('Mall', 'XYZ Shopping Mall', 'Rawalpindi', 'Punjab', 46000, 'Pakistan', 33.6844, 73.0479, true);
+    ('123 Main St', 'Lahore', 'Punjab', 54000, 'Pakistan', 31.5497, 74.3436, true),
+    ('456 Business Rd', 'Karachi', 'Sindh', 75500, 'Pakistan', 24.8607, 67.0011, true),
+    ('789 Green Ave', 'Islamabad', 'ICT', 44000, 'Pakistan', 33.6844, 73.0479, true),
+    ('101 Commercial St', 'Faisalabad', 'Punjab', 38000, 'Pakistan', 31.4504, 73.1350, true),
+    ('XYZ Shopping Mall', 'Rawalpindi', 'Punjab', 46000, 'Pakistan', 33.6844, 73.0479, true);
 
 INSERT INTO roles (name) VALUES ('ROLE_ADMIN');
 
-INSERT INTO users (created_at, name, password, email, first_name, last_name, phone, profile_picture_url, device_id, otp, otp_flag, status, location_id)
+INSERT INTO users (created_at, name, password, email, phone, profile_picture_url, device_id, otp, otp_flag, status, location_id)
 VALUES
-    ('2023-01-01 12:00:00', 'Muhammad Tabish', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'muhammadtabish05@gmail.com', 'Tabish', 'Rashid', '03353183328', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device123', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 1),
-    ('2023-02-02 14:30:00', 'Sham Ahmed', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'sham.ahmed@email.com', 'Sham', 'Ahmed', '03331234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device456', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 2),
-    ('2023-03-03 08:45:00', 'Ahmed Raza', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'ahmed.raza@email.com', 'Ahmed', 'Raza', '03041234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device789', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 3),
-    ('2023-04-04 09:30:00', 'Ayesha Malik', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'ayesha.malik@email.com', 'Ayesha', 'Malik', '03451234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device101', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 4),
-    ('2023-05-05 11:00:00', 'Kamran Khan', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'kamran.khan@email.com', 'Kamran', 'Khan', '03121234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device202', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 5),
-    ('2023-06-06 15:30:00', 'Fatima Khan', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'fatima.khan@email.com', 'Fatima', 'Khan', '03451234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device303', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 1),
-    ('2023-07-07 12:45:00', 'Zubair Ahmed', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'zubair.ahmed@email.com', 'Zubair', 'Ahmed', '03221234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device404', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 2),
-    ('2023-08-08 11:15:00', 'Sara Malik', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'sara.malik@email.com', 'Sara', 'Malik', '03331234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device505', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 3),
-    ('2023-09-09 14:00:00', 'Usman Khan', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'usman.khan@email.com', 'Usman', 'Khan', '03041234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device606', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 4),
-    ('2023-10-10 10:30:00', 'Aisha Ahmed', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'aisha.ahmed@email.com', 'Aisha', 'Ahmed', '03551234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device707', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 5);
+    ('2023-01-01 12:00:00', 'Muhammad Tabish', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'muhammadtabish05@gmail.com', '03353183328', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device123', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 1),
+    ('2023-02-02 14:30:00', 'Sham Ahmed', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'sham.ahmed@email.com', '03331234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device456', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 2),
+    ('2023-03-03 08:45:00', 'Ahmed Raza', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'ahmed.raza@email.com', '03041234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device789', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 3),
+    ('2023-04-04 09:30:00', 'Ayesha Malik', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'ayesha.malik@email.com', '03451234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device101', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 4),
+    ('2023-05-05 11:00:00', 'Kamran Khan', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'kamran.khan@email.com', '03121234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device202', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 5),
+    ('2023-06-06 15:30:00', 'Fatima Khan', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'fatima.khan@email.com', '03451234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device303', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 1),
+    ('2023-07-07 12:45:00', 'Zubair Ahmed', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'zubair.ahmed@email.com', '03221234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device404', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 2),
+    ('2023-08-08 11:15:00', 'Sara Malik', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'sara.malik@email.com', '03331234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device505', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 3),
+    ('2023-09-09 14:00:00', 'Usman Khan', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'usman.khan@email.com', '03041234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device606', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 4),
+    ('2023-10-10 10:30:00', 'Aisha Ahmed', '$2a$10$VIfRcKEbcO6U4WT1oZf/l.xIlAV.Py5cQjOACRqaUNXaSpgtH1lQi', 'aisha.ahmed@email.com', '03551234567', 'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w600/2023/10/free-images.jpg', 'device707', '$2a$10$fy5rnFrxUfZHbqSM3aKGYueg3b53W6SbnlcB6n3UKg6998fMxJkhi', true, true, 5);
 
 INSERT INTO `user_roles`(user_id, role_id) VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1);
 
@@ -29,24 +29,24 @@ VALUES
     ('Electrician', 'Electrical repairs and installations', true),
     ('Carpenter', 'Carpenter services', true);
 
-INSERT INTO service_provider (created_at, description, hourly_price, total_experience, total_rating, at_work, have_shop, status, user_id, service_id)
+INSERT INTO service_provider (created_at, description, hourly_price, total_experience, total_rating, at_work, have_shop, status, user_id, service_id, cnic_no)
 VALUES
-    ('2023-02-02 08:15:00', 'Professional plumber', 30.0, 8.0, 4.8, true, true, true, 2, 1),
-    ('2023-03-03 09:30:00', 'Fine electrician', 20.0, 3.0, 4.2, true, false, true, 3, 2),
-    ('2023-04-04 11:15:00', 'Skilled electrician', 35.0, 7.0, 4.7, true, true, true, 4, 2),
-    ('2023-04-04 11:15:00', 'Skilled carpenter', 45.0, 6.0, 4.8, true, true, true, 5, 3),
-    ('2023-04-04 11:15:00', 'Very Skilled electrician', 55.0, 8.8, 4.9, true, true, true, 7, 2),
-    ('2023-04-04 11:15:00', 'Very Skilled carpenter', 60.0, 9.0, 4.6, true, true, true, 6, 3),
-    ('2023-04-04 11:15:00', 'Good carpenter', 20.0, 2.0, 3.6, true, true, true, 10, 3),
-    ('2023-04-04 11:15:00', 'Ok carpenter', 10.0, 1.0, 2.6, true, true, true, 9, 3);
+    ('2023-02-02 08:15:00', 'Professional plumber', 30.0, 8.0, 4.8, true, true, true, 2, 1,'094637281'),
+    ('2023-03-03 09:30:00', 'Fine electrician', 20.0, 3.0, 4.2, true, false, true, 3, 2,'094637281'),
+    ('2023-04-04 11:15:00', 'Skilled electrician', 35.0, 7.0, 4.7, true, true, true, 4, 2,'094637281'),
+    ('2023-04-04 11:15:00', 'Skilled carpenter', 45.0, 6.0, 4.8, true, true, true, 5, 3,'094637281'),
+    ('2023-04-04 11:15:00', 'Very Skilled electrician', 55.0, 8.8, 4.9, true, true, true, 7, 2,'094637281'),
+    ('2023-04-04 11:15:00', 'Very Skilled carpenter', 60.0, 9.0, 4.6, true, true, true, 6, 3,'094637281'),
+    ('2023-04-04 11:15:00', 'Good carpenter', 20.0, 2.0, 3.6, true, true, true, 10, 3,'094637281'),
+    ('2023-04-04 11:15:00', 'Ok carpenter', 10.0, 1.0, 2.6, true, true, true, 9, 3,'094637281');
 
-INSERT INTO attachment (created_at, name, file_url, status, service_provider_id)
+INSERT INTO attachment (cnic_url, service_provider_id)
 VALUES
-    ('2023-01-13 17:30:00', 'Attachment1', 'https://example.com/attachment1.pdf', true, 1),
-    ('2023-02-14 12:00:00', 'Attachment2', 'https://example.com/attachment2.jpg', true, 2),
-    ('2023-03-15 09:15:00', 'Attachment3', 'https://example.com/attachment3.png', true, 3),
-    ('2023-04-16 14:30:00', 'Attachment4', 'https://example.com/attachment4.doc', true, 4),
-    ('2023-05-17 11:45:00', 'Attachment5', 'https://example.com/attachment5.xls', true, 5);
+    ('https://example.com/attachment1.pdf', 1),
+    ('https://example.com/attachment2.jpg', 2),
+    ('https://example.com/attachment3.png', 3),
+    ('https://example.com/attachment4.doc', 4),
+    ('https://example.com/attachment5.xls', 5);
 
 INSERT INTO booking (created_at, appointment_date, appointment_time, status, user_id, service_provider_id)
 VALUES
