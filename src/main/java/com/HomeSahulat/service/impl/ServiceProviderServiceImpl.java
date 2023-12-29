@@ -1,5 +1,6 @@
 package com.HomeSahulat.service.impl;
 
+import com.HomeSahulat.Util.Helper;
 import com.HomeSahulat.dto.ServiceProviderDto;
 import com.HomeSahulat.exception.RecordNotFoundException;
 import com.HomeSahulat.model.Attachment;
@@ -9,7 +10,10 @@ import com.HomeSahulat.repository.ServiceProviderRepository;
 import com.HomeSahulat.repository.ServicesRepository;
 import com.HomeSahulat.repository.UserRepository;
 import com.HomeSahulat.service.ServiceProviderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -21,17 +25,21 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     private final UserRepository userRepository;
     private final AttachmentRepository attachmentRepository;
     private final ServicesRepository servicesRepository;
+    private final Helper helper;
+    private static final Logger logger = LoggerFactory.getLogger(bucketServiceImpl.class);
 
-    public ServiceProviderServiceImpl(ServiceProviderRepository serviceProviderRepository, UserRepository userRepository, AttachmentRepository attachmentRepository, ServicesRepository servicesRepository) {
+
+    public ServiceProviderServiceImpl(ServiceProviderRepository serviceProviderRepository, UserRepository userRepository, AttachmentRepository attachmentRepository, ServicesRepository servicesRepository, Helper helper) {
         this.serviceProviderRepository = serviceProviderRepository;
         this.userRepository = userRepository;
         this.attachmentRepository = attachmentRepository;
         this.servicesRepository = servicesRepository;
+        this.helper = helper;
     }
 
     @Override
     @Transactional
-    public ServiceProviderDto save(ServiceProviderDto serviceProviderDto) {
+    public ServiceProviderDto save(ServiceProviderDto serviceProviderDto, MultipartFile file) {
         ServiceProvider serviceProvider = toEntity(serviceProviderDto);
         serviceProvider.setStatus(true);
 
@@ -43,16 +51,23 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 
         ServiceProvider createdServiceProvider = serviceProviderRepository.save(serviceProvider);
 
-        List<Attachment> attachmentList = serviceProvider.getAttachment();
-        if(attachmentList != null && !attachmentList.isEmpty()){
-            for (Attachment attachment : attachmentList) {
-                attachment.setServiceProvider(createdServiceProvider);
-                attachmentRepository.save(attachment);
+        if (file != null && !file.isEmpty()) {
+            String folderName = "ServiceProvider_" + createdServiceProvider.getId();
+            String savedUrl = helper.saveCnicToS3(file, folderName);
+
+            List<Attachment> attachmentList = serviceProvider.getAttachment();
+            if(attachmentList != null && !attachmentList.isEmpty()){
+                for (Attachment attachment : attachmentList) {
+                    attachment.setServiceProvider(createdServiceProvider);
+                    attachment.setCnicUrl(savedUrl);
+                    attachmentRepository.save(attachment);
+                }
+                createdServiceProvider.setAttachment(attachmentList);
+                serviceProviderRepository.save(createdServiceProvider);
             }
-            createdServiceProvider.setAttachment(attachmentList);
-            serviceProviderRepository.save(createdServiceProvider);
+            logger.info("File is uploaded to S3 in folder '{}'.", folderName);
         }
-        return toDto(createdServiceProvider);
+        return toDto(serviceProviderRepository.save(createdServiceProvider));
     }
 
     @Override

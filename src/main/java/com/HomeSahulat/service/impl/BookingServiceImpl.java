@@ -1,9 +1,11 @@
 package com.HomeSahulat.service.impl;
 
 import com.HomeSahulat.Util.EmailUtils;
+import com.HomeSahulat.Util.Helper;
 import com.HomeSahulat.dto.BookingDto;
 import com.HomeSahulat.exception.RecordNotFoundException;
 import com.HomeSahulat.model.Booking;
+import com.HomeSahulat.model.User;
 import com.HomeSahulat.repository.BookingRepository;
 import com.HomeSahulat.repository.ServiceProviderRepository;
 import com.HomeSahulat.repository.UserRepository;
@@ -21,12 +23,14 @@ public class BookingServiceImpl implements BookingService {
     private final UserRepository userRepository;
     private final ServiceProviderRepository serviceProviderRepository;
     private final EmailUtils emailUtils;
+    private final Helper helper;
 
-    public BookingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository, ServiceProviderRepository serviceProviderRepository, EmailUtils emailUtils) {
+    public BookingServiceImpl(BookingRepository bookingRepository, UserRepository userRepository, ServiceProviderRepository serviceProviderRepository, EmailUtils emailUtils, Helper helper) {
         this.bookingRepository = bookingRepository;
         this.userRepository = userRepository;
         this.serviceProviderRepository = serviceProviderRepository;
         this.emailUtils = emailUtils;
+        this.helper = helper;
     }
 
     @Override
@@ -50,6 +54,19 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getAll() {
         List<Booking> bookingList = bookingRepository.findAll();
+        List<BookingDto> bookingDtoList = new ArrayList<>();
+
+        for (Booking booking : bookingList) {
+            BookingDto bookingDto = toDto(booking);
+            bookingDtoList.add(bookingDto);
+        }
+        return bookingDtoList;
+    }
+
+    @Override
+    public List<BookingDto> getAllBookingByLoggedInUser() {
+        User user = helper.getCurrentUser();
+        List<Booking> bookingList = bookingRepository.findAllByUser_Id(user.getId());
         List<BookingDto> bookingDtoList = new ArrayList<>();
 
         for (Booking booking : bookingList) {
