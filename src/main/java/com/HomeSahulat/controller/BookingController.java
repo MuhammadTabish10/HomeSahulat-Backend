@@ -1,6 +1,7 @@
 package com.HomeSahulat.controller;
 
 import com.HomeSahulat.dto.BookingDto;
+import com.HomeSahulat.model.Booking;
 import com.HomeSahulat.service.BookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -93,5 +94,13 @@ public class BookingController {
     public ResponseEntity<BookingDto> updateBooking(@PathVariable Long id,@Valid @RequestBody BookingDto bookingDto) {
         BookingDto updatedBookingDto = bookingService.update(id, bookingDto);
         return ResponseEntity.ok(updatedBookingDto);
+    }
+
+    @PutMapping("/booking/{id}/status/{status}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> updateBookingStatus(@PathVariable(name = "id") Long id,
+                                                    @PathVariable(name = "status") String status) {
+        bookingService.changeBookingStatus(id, status);
+        return ResponseEntity.ok().build();
     }
 }

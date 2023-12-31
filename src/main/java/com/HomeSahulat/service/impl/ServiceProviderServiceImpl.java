@@ -51,6 +51,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         serviceProvider.setCnicUrl("url");
         serviceProvider.setTotalRating(0.0);
         serviceProvider.setAtWork(true);
+        serviceProvider.setVerified(false);
 
         serviceProvider.setServices(servicesRepository.findById(serviceProvider.getServices().getId())
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Service not found for id => %d", serviceProvider.getServices().getId()))));
@@ -89,6 +90,12 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
             serviceProviderDtoList.add(serviceProviderDto);
         }
         return serviceProviderDtoList;
+    }
+
+    @Override
+    @Transactional
+    public void verifyServiceProvider(Long id) {
+        serviceProviderRepository.setVerifiedTrue(id);
     }
 
     @Override
@@ -161,6 +168,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
                 .atWork(serviceProvider.getAtWork())
                 .haveShop(serviceProvider.getHaveShop())
                 .status(serviceProvider.getStatus())
+                .verified(serviceProvider.getVerified())
                 .user(serviceProvider.getUser())
                 .services(serviceProvider.getServices())
                 .build();
@@ -178,6 +186,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
                 .atWork(serviceProviderDto.getAtWork())
                 .haveShop(serviceProviderDto.getHaveShop())
                 .status(serviceProviderDto.getStatus())
+                .verified(serviceProviderDto.getVerified())
                 .user(serviceProviderDto.getUser())
                 .services(serviceProviderDto.getServices())
                 .build();

@@ -14,6 +14,7 @@ public interface BookingService {
     Integer countNewBookings();
     Integer countBookingsByServiceType(String ServiceType);
     Integer countTotalBookings();
+    void changeBookingStatus(Long id, String status);
     BookingDto findById(Long id);
     void deleteById(Long id);
     BookingDto update(Long id, BookingDto bookingDto);

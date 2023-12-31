@@ -20,4 +20,8 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
     List<ServiceProvider> findByServiceNameAndStatusTrue(@Param("serviceName") String serviceName);
 
     Optional<ServiceProvider> findByUser_Id(Long id);
+
+    @Modifying
+    @Query("UPDATE ServiceProvider sp SET sp.verified = true WHERE sp.id = :id")
+    void setVerifiedTrue(@Param("id") Long id);
 }
