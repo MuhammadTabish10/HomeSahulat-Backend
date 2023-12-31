@@ -118,6 +118,12 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
+    public void changeBookingStatus(Long id, String status) {
+        bookingRepository.updateBookingStatus(id,status);
+    }
+
+    @Override
     public BookingDto findById(Long id) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Booking not found for id => %d", id)));

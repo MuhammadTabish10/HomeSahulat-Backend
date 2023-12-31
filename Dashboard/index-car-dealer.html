@@ -493,7 +493,7 @@
                                                     </div>
                                                     <div class="media-body">
                                                         <strong class="text-dark">New Bookings</strong>
-                                                        <h3 class="font-light text-muted mb-0">150</h3>
+                                                        <h3 class="font-light text-muted mb-0" id="newBooking"></h3>
                                                     </div>
                                                 </div>
                                                 <div
@@ -503,7 +503,7 @@
                                                     </div>
                                                     <div class="media-body">
                                                         <strong class="text-dark">Completed Bookings</strong>
-                                                        <h3 class="font-light text-muted mb-0">300</h3>
+                                                        <h3 class="font-light text-muted mb-0" id="completedBookingCount"></h3>
                                                     </div>
                                                 </div>
                                             </div>
@@ -514,7 +514,7 @@
                                                     </div>
                                                     <div class="media-body">
                                                         <strong class="text-dark">Bookings in Progress</strong>
-                                                        <h3 class="font-light text-muted mb-0">76</h3>
+                                                        <h3 class="font-light text-muted mb-0" id="pendingBookingCount"></h3>
                                                     </div>
                                                 </div>
                                                 <div class="media align-items-center p-4">
@@ -523,7 +523,7 @@
                                                     </div>
                                                     <div class="media-body">
                                                         <strong class="text-dark">Cancelled Bookings</strong>
-                                                        <h3 class="font-light text-muted mb-0">19</h3>
+                                                        <h3 class="font-light text-muted mb-0" id="rejectedBookingCount"></h3>
                                                     </div>
                                                 </div>
                                             </div>
@@ -537,23 +537,24 @@
                             <div class="col-xxl-8 mb-30">
                                 <div class="card card-statistics h-100 mb-0">
                                     <div class="card-header">
-                                        <h4 class="card-title">Top Bookings</h4>
+                                        <h4 class="card-title">Bookings</h4>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-borderless mb-0">
+                                            <table class="table table-borderless mb-0 ">
                                                 <thead class="bg-light">
                                                     <tr>
-                                                        <th>Order number</th>
-                                                        <th>Order name</th>
-                                                        <th>Severity</th>
-                                                        <th>Date </th>
-                                                        <th>Type</th>
-                                                        <th>Action</th>
+                                                        <th>Created At</th>
+                                                        <th>Appointment Time</th>
+                                                        <th>Appointment Date</th>
+                                                        <th>Booking Status</th>
+                                                        <th>User Name</th>
+                                                        <th>Service Provider Name</th>
+                                                        <th class="text-center" colspan="2">Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="text-muted mb-0">
-                                                    <tr>
+                                                <tbody class="text-muted mb-0" id="bookingTable">
+                                                    <!-- <tr>
                                                         <td>#54981</td>
                                                         <td>Plumber Service @ Client #78642</td>
                                                         <td>4</td>
@@ -680,7 +681,7 @@
                                                                     data-toggle="tooltip" data-placement="top" title=""
                                                                     data-original-title="Delete"></i></a>
                                                         </td>
-                                                    </tr>
+                                                    </tr> -->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -717,7 +718,7 @@
                                                         <!-- <p>Consectetur ipsum dolor sit amet, adipisicing.</p> -->
                                                     </div>
                                                     <div class="col-xxs-6 ml-auto mt-3 mt-sm-0 mb-0 text-xxs-center">
-                                                        <span class="d-block text-primary font-30">81</span>
+                                                        <span class="d-block text-primary font-30" id="electricianCount"></span>
 
                                                     </div>
                                                 </div>
@@ -730,7 +731,7 @@
                                                         <!-- <p>Consectetur ipsum dolor sit amet, adipisicing.</p> -->
                                                     </div>
                                                     <div class="col-xxs-6 ml-auto mt-3 mt-sm-0 mb-0 text-xxs-center">
-                                                        <span class="d-block text-primary font-30">122</span>
+                                                        <span class="d-block text-primary font-30" id="plumberCount"></span>
 
                                                     </div>
                                                 </div>
@@ -743,7 +744,7 @@
                                                         <!-- <p>Consectetur ipsum dolor sit amet, adipisicing.</p> -->
                                                     </div>
                                                     <div class="col-xxs-6 ml-auto mt-3 mt-sm-0 mb-0 text-xxs-center">
-                                                        <span class="d-block text-primary font-30">97</span>
+                                                        <span class="d-block text-primary font-30" id="carpenterCount"></span>
 
                                                     </div>
                                                 </div>
@@ -755,7 +756,7 @@
                                                         <!-- <p>Consectetur ipsum dolor sit amet, adipisicing.</p> -->
                                                     </div>
                                                     <div class="col-xxs-6 ml-auto mt-3 mt-sm-0 text-xxs-center">
-                                                        <span class="d-block text-primary font-30">300</span>
+                                                        <span class="d-block text-primary font-30" id="totalBookingCounts"></span>
 
                                                     </div>
                                                 </div>
@@ -1000,6 +1001,7 @@
 
     <!-- custom app -->
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/booking.js"></script>
 </body>
 
 

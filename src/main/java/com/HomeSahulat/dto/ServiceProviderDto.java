@@ -47,6 +47,7 @@ public class ServiceProviderDto {
 
     private String cnicUrl;
     private Boolean status;
+    private Boolean verified;
 
     @NotNull(message = "User cannot be null")
     private User user;

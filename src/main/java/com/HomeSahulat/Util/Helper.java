@@ -9,6 +9,7 @@ import com.HomeSahulat.service.impl.bucketServiceImpl;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,5 +103,23 @@ public class Helper {
             logger.error("Failed to save PDF to S3", e);
             throw new RuntimeException("Failed to save PDF to S3: " + e.getMessage());
         }
+    }
+
+    public MediaType determineMediaType(String fileName) {
+        // Get file extension (assuming the extension is the part after the last dot)
+        int lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex > 0 && lastDotIndex < fileName.length() - 1) {
+            String fileExtension = fileName.substring(lastDotIndex + 1).toLowerCase();
+
+            // Determine media type based on file extension
+            switch (fileExtension) {
+                case "png":
+                    return MediaType.IMAGE_PNG;
+                case "jpg":
+                case "jpeg":
+                    return MediaType.IMAGE_JPEG;
+            }
+        }
+        return null;
     }
 }

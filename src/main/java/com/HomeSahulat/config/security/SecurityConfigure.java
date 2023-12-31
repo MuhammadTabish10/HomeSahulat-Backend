@@ -35,7 +35,8 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
             "/webjars/**",
             "/api/user/forgot-password",
             "/api/user/reset-password",
-            "/api/service-provider/{id}/upload"
+            "/api/service-provider/{id}/upload",
+            "/api/file/{folderType}/{folderName}/{fileName}"
     };
 
     @Autowired

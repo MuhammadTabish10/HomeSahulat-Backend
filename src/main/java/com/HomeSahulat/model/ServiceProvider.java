@@ -36,6 +36,7 @@
         private Boolean haveShop;
         private String cnicUrl;
         private Boolean status;
+        private Boolean verified;
 
         @JsonIgnore
         @OneToOne

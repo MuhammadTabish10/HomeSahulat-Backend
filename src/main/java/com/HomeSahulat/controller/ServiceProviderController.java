@@ -1,7 +1,12 @@
 package com.HomeSahulat.controller;
 
+import com.HomeSahulat.Util.Helper;
 import com.HomeSahulat.dto.ServiceProviderDto;
+import com.HomeSahulat.service.BucketService;
 import com.HomeSahulat.service.ServiceProviderService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +19,13 @@ import java.util.List;
 @RequestMapping("/api")
 public class ServiceProviderController {
     private final ServiceProviderService serviceProviderService;
+    private final BucketService bucketService;
+    private final Helper helper;
 
-    public ServiceProviderController(ServiceProviderService serviceProviderService) {
+    public ServiceProviderController(ServiceProviderService serviceProviderService, BucketService bucketService, Helper helper) {
         this.serviceProviderService = serviceProviderService;
+        this.bucketService = bucketService;
+        this.helper = helper;
     }
 
     @PostMapping("/service-provider")
@@ -46,6 +55,13 @@ public class ServiceProviderController {
         return ResponseEntity.ok(serviceProviderDtoList);
     }
 
+    @GetMapping("/service-provider/verified/{verify}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<ServiceProviderDto>> getAllServiceProvidersByVerify(@PathVariable Boolean verify) {
+        List<ServiceProviderDto> serviceProviderDtoList = serviceProviderService.getAllUnVerifiedServiceProvider(verify);
+        return ResponseEntity.ok(serviceProviderDtoList);
+    }
+
     @GetMapping("/service-provider/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ServiceProviderDto> getServiceProviderById(@PathVariable Long id) {
@@ -72,5 +88,37 @@ public class ServiceProviderController {
     public ResponseEntity<ServiceProviderDto> updateServiceProvider(@PathVariable Long id,@Valid @RequestBody ServiceProviderDto serviceProviderDto) {
         ServiceProviderDto updatedServiceProviderDto = serviceProviderService.update(id, serviceProviderDto);
         return ResponseEntity.ok(updatedServiceProviderDto);
+    }
+
+    @PutMapping("/service-provider/{id}/verify/{verify}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> verifyServiceProvider(@PathVariable(name = "id") Long id,
+                                                      @PathVariable(name = "verify") Boolean verify) {
+        serviceProviderService.verifyServiceProvider(id,verify);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/file/{folderType}/{folderName}/{fileName}")
+    public ResponseEntity<byte[]> downloadFile(
+            @PathVariable String folderName,
+            @PathVariable String fileName,
+            @PathVariable String folderType
+    ) {
+        try {
+            byte[] fileContent = bucketService.downloadFile(folderName, fileName, folderType);
+
+            // Determine the media type based on the file extension
+            MediaType mediaType = helper.determineMediaType(fileName);
+
+            // Return the file content as a ResponseEntity with appropriate headers
+            return ResponseEntity.ok()
+                    .contentType(mediaType)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                    .body(fileContent);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(("Error downloading file: " + e.getMessage()).getBytes());
+        }
     }
 }
