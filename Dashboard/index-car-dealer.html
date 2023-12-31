@@ -544,16 +544,17 @@
                                             <table class="table table-borderless mb-0">
                                                 <thead class="bg-light">
                                                     <tr>
-                                                        <th>Order number</th>
-                                                        <th>Order name</th>
-                                                        <th>Severity</th>
-                                                        <th>Date </th>
-                                                        <th>Type</th>
-                                                        <th>Action</th>
+                                                        <th>Created At</th>
+                                                        <th>Appointment Time</th>
+                                                        <th>Appointment Date</th>
+                                                        <th>Booking Status</th>
+                                                        <th>User Name</th>
+                                                        <th>Service Provider Name</th>
+                                                        <th class="text-center" colspan="2">Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="text-muted mb-0">
-                                                    <tr>
+                                                <tbody class="text-muted mb-0" id="bookingTable">
+                                                    <!-- <tr>
                                                         <td>#54981</td>
                                                         <td>Plumber Service @ Client #78642</td>
                                                         <td>4</td>
@@ -680,7 +681,7 @@
                                                                     data-toggle="tooltip" data-placement="top" title=""
                                                                     data-original-title="Delete"></i></a>
                                                         </td>
-                                                    </tr>
+                                                    </tr> -->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -1000,6 +1001,7 @@
 
     <!-- custom app -->
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/booking.js"></script>
 </body>
 
 
