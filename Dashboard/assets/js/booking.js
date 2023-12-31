@@ -101,3 +101,92 @@ function deleteBooking(id) {
     });
 }
 function editBookings(id) { }
+
+
+function getServiceCounts(service) {
+  fetch(`${url}/booking/by-service/${service}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      const elementId = `${service.toLowerCase()}Count`;
+      const serviceCountElement = document.getElementById(elementId);
+      if (serviceCountElement) {
+        serviceCountElement.innerHTML = data;
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+getServiceCounts("Electrician");
+getServiceCounts("Plumber");
+getServiceCounts("Carpenter");
+
+function getTotalBookings() {
+  fetch(`${url}/booking/total`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      const totalBookingCounts = document.getElementById("totalBookingCounts");
+      totalBookingCounts.innerHTML = data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+getTotalBookings();
+
+function getNewBookingCount() {
+  fetch(`${url}/booking/new`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      const getNewBookingCount = document.getElementById("newBooking");
+      getNewBookingCount.innerHTML = data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+getNewBookingCount();
+
+function getCountOfBookingByStatus(status) {
+  debugger
+  fetch(`${url}/booking/by-status/${status}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      const elementId = `${status.toLowerCase()}BookingCount`;
+      const serviceCountElement = document.getElementById(elementId);
+      if (serviceCountElement) {
+        serviceCountElement.innerHTML = data;
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+getCountOfBookingByStatus("Pending");
+getCountOfBookingByStatus("Completed");
+getCountOfBookingByStatus("Rejected");

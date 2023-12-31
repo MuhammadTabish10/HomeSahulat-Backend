@@ -25,7 +25,7 @@ function getServiceProviders() {
 getServiceProviders()
 
 function addRowToTable(rowData) {
-    debugger
+    
     const table = document.getElementById("serviceProviderTable");
 
     for (var i = 0; i < rowData.length; i++) {

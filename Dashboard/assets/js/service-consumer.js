@@ -25,7 +25,7 @@ function getServiceConsumers() {
 getServiceConsumers()
 
 function addRowToTable(rowData) {
-  debugger
+  
   const table = document.getElementById("serviceConsumerTable");
 
   for (var i = 0; i < rowData.length; i++) {
@@ -53,7 +53,7 @@ function addRowToTable(rowData) {
       // Add a conditional check for chip (tick or cross)
       if (j === 3) {
         const chip = document.createElement("span");
-        chip.className = rowData[i].otpFlag ? "fas fa-check-circle ml-1 text-success" : "fas fa-times-circle text-danger";
+        chip.className = rowData[i].otpFlag ? "fas fa-check-circle ml-1 text-success" : "fas fa-times-circle text-danger ml-1";
         cell.appendChild(chip);
       }
 
