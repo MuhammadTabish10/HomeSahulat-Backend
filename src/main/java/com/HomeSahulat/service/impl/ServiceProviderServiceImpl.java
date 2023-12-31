@@ -106,8 +106,8 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 
     @Override
     @Transactional
-    public void verifyServiceProvider(Long id) {
-        serviceProviderRepository.setVerifiedTrue(id);
+    public void verifyServiceProvider(Long id, Boolean verify) {
+        serviceProviderRepository.setVerified(verify,id);
     }
 
     @Override
