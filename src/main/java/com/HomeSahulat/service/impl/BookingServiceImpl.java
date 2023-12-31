@@ -13,6 +13,7 @@ import com.HomeSahulat.service.BookingService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +87,34 @@ public class BookingServiceImpl implements BookingService {
             bookingDtoList.add(bookingDto);
         }
         return bookingDtoList;
+    }
+
+    @Override
+    public Integer countBookingsByStatus(String status) {
+        List<Booking> bookingList = bookingRepository.findAllByBookingStatus(status);
+        return bookingList.size();
+    }
+
+    @Override
+    public Integer countNewBookings() {
+        LocalDate today = LocalDate.now();
+
+        List<Booking> bookingsCreatedToday = bookingRepository.findAllByCreatedAtBetween(
+                today.atStartOfDay(), today.atTime(23, 59, 59));
+
+        return bookingsCreatedToday.size();
+    }
+
+    @Override
+    public Integer countBookingsByServiceType(String serviceType) {
+        List<Booking> bookingList = bookingRepository.findAllByServiceProvider_Services_Name(serviceType);
+        return bookingList.size();
+    }
+
+    @Override
+    public Integer countTotalBookings() {
+        List<Booking> bookingList = bookingRepository.findAll();
+        return bookingList.size();
     }
 
     @Override

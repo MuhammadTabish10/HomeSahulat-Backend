@@ -53,6 +53,34 @@ public class BookingController {
         return ResponseEntity.ok(bookingDto);
     }
 
+    @GetMapping("/booking/by-status/{status}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Integer> getBookingCountByStatus(@PathVariable String status) {
+        Integer count = bookingService.countBookingsByStatus(status);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/booking/by-service/{service}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Integer> getBookingCountByService(@PathVariable String service) {
+        Integer count = bookingService.countBookingsByServiceType(service);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/booking/total")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Integer> getTotalBooking() {
+        Integer count = bookingService.countTotalBookings();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/booking/new")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Integer> getNewBooking() {
+        Integer count = bookingService.countNewBookings();
+        return ResponseEntity.ok(count);
+    }
+
     @DeleteMapping("/booking/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {

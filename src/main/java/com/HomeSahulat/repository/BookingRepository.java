@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -18,4 +19,11 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking> findAllByUser_Id(Long id);
 
     List<Booking> findAllByServiceProvider_Id(Long id);
+
+    List<Booking> findAllByBookingStatus(String status);
+
+    List<Booking> findAllByCreatedAtBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
+
+    List<Booking> findAllByServiceProvider_Services_Name(String serviceType);
 }
+
