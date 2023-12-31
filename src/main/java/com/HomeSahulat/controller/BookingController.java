@@ -1,6 +1,7 @@
 package com.HomeSahulat.controller;
 
 import com.HomeSahulat.dto.BookingDto;
+import com.HomeSahulat.model.Booking;
 import com.HomeSahulat.service.BookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,6 +54,34 @@ public class BookingController {
         return ResponseEntity.ok(bookingDto);
     }
 
+    @GetMapping("/booking/by-status/{status}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Integer> getBookingCountByStatus(@PathVariable String status) {
+        Integer count = bookingService.countBookingsByStatus(status);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/booking/by-service/{service}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Integer> getBookingCountByService(@PathVariable String service) {
+        Integer count = bookingService.countBookingsByServiceType(service);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/booking/total")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Integer> getTotalBooking() {
+        Integer count = bookingService.countTotalBookings();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/booking/new")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Integer> getNewBooking() {
+        Integer count = bookingService.countNewBookings();
+        return ResponseEntity.ok(count);
+    }
+
     @DeleteMapping("/booking/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
@@ -65,5 +94,13 @@ public class BookingController {
     public ResponseEntity<BookingDto> updateBooking(@PathVariable Long id,@Valid @RequestBody BookingDto bookingDto) {
         BookingDto updatedBookingDto = bookingService.update(id, bookingDto);
         return ResponseEntity.ok(updatedBookingDto);
+    }
+
+    @PutMapping("/booking/{id}/status/{status}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> updateBookingStatus(@PathVariable(name = "id") Long id,
+                                                    @PathVariable(name = "status") String status) {
+        bookingService.changeBookingStatus(id, status);
+        return ResponseEntity.ok().build();
     }
 }
