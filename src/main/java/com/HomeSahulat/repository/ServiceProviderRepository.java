@@ -19,6 +19,8 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
     @Query("SELECT sp FROM ServiceProvider sp JOIN sp.services s WHERE s.name = :serviceName AND sp.status = true")
     List<ServiceProvider> findByServiceNameAndStatusTrue(@Param("serviceName") String serviceName);
 
+    List<ServiceProvider> findAllByVerified(Boolean verify);
+
     Optional<ServiceProvider> findByUser_Id(Long id);
 
     @Modifying

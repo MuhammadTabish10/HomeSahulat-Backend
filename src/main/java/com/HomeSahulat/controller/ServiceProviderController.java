@@ -55,6 +55,13 @@ public class ServiceProviderController {
         return ResponseEntity.ok(serviceProviderDtoList);
     }
 
+    @GetMapping("/service-provider/verified/{verify}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<ServiceProviderDto>> getAllServiceProvidersByVerify(@PathVariable Boolean verify) {
+        List<ServiceProviderDto> serviceProviderDtoList = serviceProviderService.getAllUnVerifiedServiceProvider(verify);
+        return ResponseEntity.ok(serviceProviderDtoList);
+    }
+
     @GetMapping("/service-provider/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ServiceProviderDto> getServiceProviderById(@PathVariable Long id) {
