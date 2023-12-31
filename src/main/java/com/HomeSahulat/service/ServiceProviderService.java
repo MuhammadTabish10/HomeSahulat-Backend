@@ -9,6 +9,7 @@ public interface ServiceProviderService {
     ServiceProviderDto save(ServiceProviderDto serviceProviderDto);
     String uploadCnic(Long id, MultipartFile file);
     List<ServiceProviderDto> getAll();
+    List<ServiceProviderDto> getAllUnVerifiedServiceProvider(Boolean verify);
     void verifyServiceProvider(Long id);
     List<ServiceProviderDto> getServiceProviderByService(String service);
     ServiceProviderDto findById(Long id);

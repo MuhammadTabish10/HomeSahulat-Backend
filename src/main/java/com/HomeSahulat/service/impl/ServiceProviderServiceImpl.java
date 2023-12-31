@@ -93,6 +93,18 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     }
 
     @Override
+    public List<ServiceProviderDto> getAllUnVerifiedServiceProvider(Boolean verify) {
+        List<ServiceProvider> serviceProviderList = serviceProviderRepository.findAllByVerified(verify);
+        List<ServiceProviderDto> serviceProviderDtoList = new ArrayList<>();
+
+        for (ServiceProvider serviceProvider : serviceProviderList) {
+            ServiceProviderDto serviceProviderDto = toDto(serviceProvider);
+            serviceProviderDtoList.add(serviceProviderDto);
+        }
+        return serviceProviderDtoList;
+    }
+
+    @Override
     @Transactional
     public void verifyServiceProvider(Long id) {
         serviceProviderRepository.setVerifiedTrue(id);
