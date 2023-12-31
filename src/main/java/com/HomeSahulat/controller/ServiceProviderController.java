@@ -90,10 +90,11 @@ public class ServiceProviderController {
         return ResponseEntity.ok(updatedServiceProviderDto);
     }
 
-    @PutMapping("/service-provider/verify/{id}")
+    @PutMapping("/service-provider/{id}/verify/{verify}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> verifyServiceProvider(@PathVariable(name = "id") Long id) {
-        serviceProviderService.verifyServiceProvider(id);
+    public ResponseEntity<Void> verifyServiceProvider(@PathVariable(name = "id") Long id,
+                                                      @PathVariable(name = "verify") Boolean verify) {
+        serviceProviderService.verifyServiceProvider(id,verify);
         return ResponseEntity.ok().build();
     }
 

@@ -10,7 +10,7 @@ public interface ServiceProviderService {
     String uploadCnic(Long id, MultipartFile file);
     List<ServiceProviderDto> getAll();
     List<ServiceProviderDto> getAllUnVerifiedServiceProvider(Boolean verify);
-    void verifyServiceProvider(Long id);
+    void verifyServiceProvider(Long id, Boolean verify);
     List<ServiceProviderDto> getServiceProviderByService(String service);
     ServiceProviderDto findById(Long id);
     ServiceProviderDto findByUserId(Long id);
