@@ -3,45 +3,54 @@ package com.HomeSahulat.service.impl;
 import com.HomeSahulat.Util.Helper;
 import com.HomeSahulat.dto.ServiceProviderDto;
 import com.HomeSahulat.exception.RecordNotFoundException;
-import com.HomeSahulat.model.Attachment;
 import com.HomeSahulat.model.ServiceProvider;
-import com.HomeSahulat.repository.AttachmentRepository;
 import com.HomeSahulat.repository.ServiceProviderRepository;
 import com.HomeSahulat.repository.ServicesRepository;
 import com.HomeSahulat.repository.UserRepository;
 import com.HomeSahulat.service.ServiceProviderService;
+import com.amazonaws.services.budgets.model.DuplicateRecordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServiceProviderServiceImpl implements ServiceProviderService {
 
     private final ServiceProviderRepository serviceProviderRepository;
     private final UserRepository userRepository;
-    private final AttachmentRepository attachmentRepository;
     private final ServicesRepository servicesRepository;
     private final Helper helper;
     private static final Logger logger = LoggerFactory.getLogger(bucketServiceImpl.class);
 
 
-    public ServiceProviderServiceImpl(ServiceProviderRepository serviceProviderRepository, UserRepository userRepository, AttachmentRepository attachmentRepository, ServicesRepository servicesRepository, Helper helper) {
+    public ServiceProviderServiceImpl(ServiceProviderRepository serviceProviderRepository, UserRepository userRepository, ServicesRepository servicesRepository, Helper helper) {
         this.serviceProviderRepository = serviceProviderRepository;
         this.userRepository = userRepository;
-        this.attachmentRepository = attachmentRepository;
         this.servicesRepository = servicesRepository;
         this.helper = helper;
     }
 
     @Override
     @Transactional
-    public ServiceProviderDto save(ServiceProviderDto serviceProviderDto, MultipartFile file) {
+    public ServiceProviderDto save(ServiceProviderDto serviceProviderDto) {
         ServiceProvider serviceProvider = toEntity(serviceProviderDto);
+
+        // Check if there is already a record with the same user ID
+        Optional<ServiceProvider> existingServiceProvider = serviceProviderRepository.findByUser_Id(serviceProvider.getUser().getId());
+        if (existingServiceProvider.isPresent()) {
+            throw new RecordNotFoundException("ServiceProvider already exists");
+        }
+
         serviceProvider.setStatus(true);
+        serviceProvider.setCnicUrl("url");
+        serviceProvider.setTotalRating(0.0);
+        serviceProvider.setAtWork(true);
 
         serviceProvider.setServices(servicesRepository.findById(serviceProvider.getServices().getId())
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Service not found for id => %d", serviceProvider.getServices().getId()))));
@@ -50,24 +59,24 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
                 .orElseThrow(() -> new RecordNotFoundException(String.format("User not found for id => %d", serviceProvider.getUser().getId())))));
 
         ServiceProvider createdServiceProvider = serviceProviderRepository.save(serviceProvider);
+        return toDto(createdServiceProvider);
+    }
+
+    @Override
+    @Transactional
+    public String uploadCnic(Long id, MultipartFile file) {
+        ServiceProvider serviceProvider = serviceProviderRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Service Provider not found for id => %d", id)));
 
         if (file != null && !file.isEmpty()) {
-            String folderName = "ServiceProvider_" + createdServiceProvider.getId();
+            String folderName = "ServiceProvider_" + serviceProvider.getId();
             String savedUrl = helper.saveCnicToS3(file, folderName);
-
-            List<Attachment> attachmentList = serviceProvider.getAttachment();
-            if(attachmentList != null && !attachmentList.isEmpty()){
-                for (Attachment attachment : attachmentList) {
-                    attachment.setServiceProvider(createdServiceProvider);
-                    attachment.setCnicUrl(savedUrl);
-                    attachmentRepository.save(attachment);
-                }
-                createdServiceProvider.setAttachment(attachmentList);
-                serviceProviderRepository.save(createdServiceProvider);
-            }
+            serviceProvider.setCnicUrl(savedUrl);
             logger.info("File is uploaded to S3 in folder '{}'.", folderName);
+            serviceProviderRepository.save(serviceProvider);
+            return "File uploaded successfully";
         }
-        return toDto(serviceProviderRepository.save(createdServiceProvider));
+        return "File upload failed";
     }
 
     @Override
@@ -102,6 +111,13 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     }
 
     @Override
+    public ServiceProviderDto findByUserId(Long id) {
+        ServiceProvider serviceProvider = serviceProviderRepository.findByUser_Id(id)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Service Provider not found for Userid => %d", id)));
+        return toDto(serviceProvider);
+    }
+
+    @Override
     @Transactional
     public void deleteById(Long id) {
         ServiceProvider serviceProvider = serviceProviderRepository.findById(id)
@@ -129,35 +145,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         existingServiceProvider.setUser(userRepository.findById(serviceProviderDto.getUser().getId())
                 .orElseThrow(() -> new RecordNotFoundException(String.format("User not found for id => %d", serviceProviderDto.getUser().getId()))));
 
-        List<Attachment> existingAttachmentValues = existingServiceProvider.getAttachment();
-        List<Attachment> newAttachmentValues = serviceProviderDto.getAttachment();
-        List<Attachment> newValuesToAdd = new ArrayList<>();
-
-        Iterator<Attachment> iterator = existingAttachmentValues.iterator();
-        while (iterator.hasNext()) {
-            Attachment existingAttachment = iterator.next();
-            if (newAttachmentValues.stream().noneMatch(attachment -> attachment.getId().equals(existingAttachment.getId()))) {
-                iterator.remove();
-                attachmentRepository.delete(existingAttachment);
-            }
-        }
-
-        for (Attachment newValue : newAttachmentValues) {
-            Optional<Attachment> existingValue = existingAttachmentValues.stream()
-                    .filter(aValue -> aValue.getId().equals(newValue.getId())).findFirst();
-            if (existingValue.isPresent()) {
-                Attachment existingAttachmentValue = existingValue.get();
-                existingAttachmentValue.setCnicUrl(newValue.getCnicUrl());
-            } else {
-                newValue.setServiceProvider(existingServiceProvider);
-                newValuesToAdd.add(newValue);
-                count++;
-            }
-        }
-        if (count > 0) {
-            existingAttachmentValues.addAll(newValuesToAdd);
-        }
-
         ServiceProvider updatedServiceProvider = serviceProviderRepository.save(existingServiceProvider);
         return toDto(updatedServiceProvider);
     }
@@ -176,7 +163,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
                 .status(serviceProvider.getStatus())
                 .user(serviceProvider.getUser())
                 .services(serviceProvider.getServices())
-                .attachment(serviceProvider.getAttachment())
                 .build();
     }
 
@@ -194,7 +180,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
                 .status(serviceProviderDto.getStatus())
                 .user(serviceProviderDto.getUser())
                 .services(serviceProviderDto.getServices())
-                .attachment(serviceProviderDto.getAttachment())
                 .build();
     }
 }

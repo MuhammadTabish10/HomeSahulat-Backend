@@ -37,6 +37,13 @@ public class ServicesController {
         return ResponseEntity.ok(servicesDto);
     }
 
+    @GetMapping("/service/name/{name}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ServicesDto> getServicesByName(@PathVariable String name) {
+        ServicesDto servicesDto = service.findByName(name);
+        return ResponseEntity.ok(servicesDto);
+    }
+
     @DeleteMapping("/service/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteServices(@PathVariable Long id) {

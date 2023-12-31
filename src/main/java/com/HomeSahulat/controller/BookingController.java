@@ -39,6 +39,13 @@ public class BookingController {
         return ResponseEntity.ok(bookingDtoList);
     }
 
+    @GetMapping("/booking/serviceProvider/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<BookingDto>> getAllBookingByServiceProvider(@PathVariable Long id) {
+        List<BookingDto> bookingDtoList = bookingService.getAllBookingByServiceProvider(id);
+        return ResponseEntity.ok(bookingDtoList);
+    }
+
     @GetMapping("/booking/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<BookingDto> getBookingById(@PathVariable Long id) {

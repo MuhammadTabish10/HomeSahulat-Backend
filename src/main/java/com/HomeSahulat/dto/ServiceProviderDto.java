@@ -1,6 +1,5 @@
 package com.HomeSahulat.dto;
 
-import com.HomeSahulat.model.Attachment;
 import com.HomeSahulat.model.Services;
 import com.HomeSahulat.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -13,7 +12,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -47,6 +45,7 @@ public class ServiceProviderDto {
     @NotNull(message = "Shop status cannot be null")
     private Boolean haveShop;
 
+    private String cnicUrl;
     private Boolean status;
 
     @NotNull(message = "User cannot be null")
@@ -55,5 +54,4 @@ public class ServiceProviderDto {
     @NotNull(message = "Service cannot be null")
     private Services services;
 
-    private List<Attachment> attachment;
 }

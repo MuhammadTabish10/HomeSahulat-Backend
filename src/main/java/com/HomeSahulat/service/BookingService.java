@@ -9,6 +9,7 @@ public interface BookingService {
     BookingDto save(BookingDto bookingDto);
     List<BookingDto> getAll();
     List<BookingDto> getAllBookingByLoggedInUser();
+    List<BookingDto> getAllBookingByServiceProvider(Long id);
     BookingDto findById(Long id);
     void deleteById(Long id);
     BookingDto update(Long id, BookingDto bookingDto);

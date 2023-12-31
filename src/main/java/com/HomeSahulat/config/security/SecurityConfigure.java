@@ -34,7 +34,8 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
             "/swagger-ui/**",
             "/webjars/**",
             "/api/user/forgot-password",
-            "/api/user/reset-password", 
+            "/api/user/reset-password",
+            "/api/service-provider/{id}/upload"
     };
 
     @Autowired

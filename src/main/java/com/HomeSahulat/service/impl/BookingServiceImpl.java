@@ -77,6 +77,18 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public List<BookingDto> getAllBookingByServiceProvider(Long id) {
+        List<Booking> bookingList = bookingRepository.findAllByServiceProvider_Id(id);
+        List<BookingDto> bookingDtoList = new ArrayList<>();
+
+        for (Booking booking : bookingList) {
+            BookingDto bookingDto = toDto(booking);
+            bookingDtoList.add(bookingDto);
+        }
+        return bookingDtoList;
+    }
+
+    @Override
     public BookingDto findById(Long id) {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Booking not found for id => %d", id)));

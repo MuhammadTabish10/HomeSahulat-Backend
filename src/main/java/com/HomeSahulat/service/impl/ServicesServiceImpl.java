@@ -49,6 +49,13 @@ public class ServicesServiceImpl implements ServicesService {
     }
 
     @Override
+    public ServicesDto findByName(String name) {
+        Services services = servicesRepository.findByName(name)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("Service not found for name => %s", name)));
+        return toDto(services);
+    }
+
+    @Override
     @Transactional
     public void deleteById(Long id) {
         Services services = servicesRepository.findById(id)

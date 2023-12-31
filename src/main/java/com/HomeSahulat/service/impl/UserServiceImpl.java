@@ -54,6 +54,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setStatus(true);
         user.setOtpFlag(false);
+        user.setResetCode("code");
+        user.setResetCodeTimestamp(LocalDateTime.now());
 
         if(userdto.getLocation() != null){
             user.setLocation((locationRepository.findById(user.getLocation().getId())

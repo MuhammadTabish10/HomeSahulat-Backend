@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ServiceProviderRepository extends JpaRepository<ServiceProvider,Long> {
@@ -16,4 +17,7 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
     void setStatusInactive(@Param("id") Long id);
 
     @Query("SELECT sp FROM ServiceProvider sp JOIN sp.services s WHERE s.name = :serviceName AND sp.status = true")
-    List<ServiceProvider> findByServiceNameAndStatusTrue(@Param("serviceName") String serviceName);}
+    List<ServiceProvider> findByServiceNameAndStatusTrue(@Param("serviceName") String serviceName);
+
+    Optional<ServiceProvider> findByUser_Id(Long id);
+}

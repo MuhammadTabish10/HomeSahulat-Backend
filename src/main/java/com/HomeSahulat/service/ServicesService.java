@@ -8,6 +8,7 @@ public interface ServicesService {
     ServicesDto save(ServicesDto servicesDto);
     List<ServicesDto> getAll();
     ServicesDto findById(Long id);
+    ServicesDto findByName(String name);
     void deleteById(Long id);
     ServicesDto update(Long id, ServicesDto servicesDto);
 }

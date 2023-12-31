@@ -34,6 +34,7 @@
         private Double totalRating;
         private Boolean atWork;
         private Boolean haveShop;
+        private String cnicUrl;
         private Boolean status;
 
         @JsonIgnore
@@ -44,7 +45,4 @@
         @ManyToOne
         @JoinColumn(name = "service_id")
         private Services services;
-
-        @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-        private List<Attachment> attachment;
     }

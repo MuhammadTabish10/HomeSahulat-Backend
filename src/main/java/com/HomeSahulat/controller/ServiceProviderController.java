@@ -21,10 +21,16 @@ public class ServiceProviderController {
 
     @PostMapping("/service-provider")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ServiceProviderDto> createServiceProvider(@RequestPart ServiceProviderDto serviceProviderDto,
-                                                                    @RequestPart("file") MultipartFile file) {
-        return ResponseEntity.ok(serviceProviderService.save(serviceProviderDto,file));
+    public ResponseEntity<ServiceProviderDto> createServiceProvider(@Valid @RequestBody ServiceProviderDto serviceProviderDto) {
+        return ResponseEntity.ok(serviceProviderService.save(serviceProviderDto));
     }
+
+    @PostMapping("/service-provider/{id}/upload")
+    public ResponseEntity<String> uploadServiceProviderCnic(@RequestParam("file")  MultipartFile file,
+                                                            @PathVariable Long id) {
+        return ResponseEntity.ok(serviceProviderService.uploadCnic(id,file));
+    }
+
 
     @GetMapping("/service-provider")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -44,6 +50,13 @@ public class ServiceProviderController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ServiceProviderDto> getServiceProviderById(@PathVariable Long id) {
         ServiceProviderDto serviceProviderDto = serviceProviderService.findById(id);
+        return ResponseEntity.ok(serviceProviderDto);
+    }
+
+    @GetMapping("/service-provider/user/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ServiceProviderDto> getServiceProviderByUserId(@PathVariable Long id) {
+        ServiceProviderDto serviceProviderDto = serviceProviderService.findByUserId(id);
         return ResponseEntity.ok(serviceProviderDto);
     }
 
