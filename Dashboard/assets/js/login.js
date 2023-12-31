@@ -4,7 +4,7 @@ var token = localStorage.getItem("token");
 var url = "http://localhost:8080/api";
 
 function login() {
-    
+
     localStorage.clear();
     var username = document.getElementById("number").value;
     var password = document.getElementById("password").value;
@@ -22,8 +22,8 @@ function login() {
         .then((res) => res.json())
         .then((data) => {
             if (data.jwt) {
-                
                 localStorage.setItem("token", data.jwt)
+                location.href = "index.html";
             } else {
                 console.error("Authentication failed");
             }
