@@ -1,7 +1,7 @@
 // Usama Work
 
 var token = localStorage.getItem("token");
-var url = "http://localhost:8080/api";
+var url = "https://api.homesahulat.stepwaysoftwares.com/api";
 
 function getServiceProviders() {
     fetch(url + "/service-provider", {
