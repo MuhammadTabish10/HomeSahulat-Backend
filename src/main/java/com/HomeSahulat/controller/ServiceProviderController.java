@@ -76,6 +76,13 @@ public class ServiceProviderController {
         return ResponseEntity.ok(serviceProviderDto);
     }
 
+    @GetMapping("/service-provider/user/{id}/check-verify")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Boolean> isServiceProviderVerified(@PathVariable Long id) {
+        Boolean check = serviceProviderService.isVerified(id);
+        return ResponseEntity.ok(check);
+    }
+
     @DeleteMapping("/service-provider/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteServiceProvider(@PathVariable Long id) {

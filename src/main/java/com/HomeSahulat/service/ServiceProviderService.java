@@ -13,6 +13,7 @@ public interface ServiceProviderService {
     void verifyServiceProvider(Long id, Boolean verify);
     List<ServiceProviderDto> getServiceProviderByService(String service);
     ServiceProviderDto findById(Long id);
+    Boolean isVerified(Long id);
     ServiceProviderDto findByUserId(Long id);
     void deleteById(Long id);
     ServiceProviderDto update(Long id, ServiceProviderDto serviceProviderDto);

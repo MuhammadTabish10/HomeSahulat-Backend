@@ -130,6 +130,12 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     }
 
     @Override
+    public Boolean isVerified(Long id) {
+        return serviceProviderRepository.isVerifiedById(id)
+                .orElseThrow(() -> new RecordNotFoundException(String.format("This user is not a Service Provider => %d", id)));
+    }
+
+    @Override
     public ServiceProviderDto findByUserId(Long id) {
         ServiceProvider serviceProvider = serviceProviderRepository.findByUser_Id(id)
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Service Provider not found for Userid => %d", id)));
