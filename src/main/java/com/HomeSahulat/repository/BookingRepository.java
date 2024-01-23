@@ -17,7 +17,8 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     @Query("UPDATE Booking b SET b.status = false WHERE b.id = :id")
     void setStatusInactive(@Param("id") Long id);
     List<Booking> findAllByUser_Id(Long id);
-    List<Booking> findAllByServiceProvider_Id(Long id);
+    List<Booking> findAllByServiceProvider_IdAndBookingStatus(Long id, String status);
+
     List<Booking> findAllByBookingStatus(String status);
     List<Booking> findAllByCreatedAtBetween(LocalDateTime startDateTime, LocalDateTime endDateTime);
     List<Booking> findAllByServiceProvider_Services_Name(String serviceType);

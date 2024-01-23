@@ -2,7 +2,9 @@ package com.HomeSahulat.Util;
 
 import com.HomeSahulat.dto.CustomUserDetail;
 import com.HomeSahulat.exception.RecordNotFoundException;
+import com.HomeSahulat.model.ServiceProvider;
 import com.HomeSahulat.model.User;
+import com.HomeSahulat.repository.ServiceProviderRepository;
 import com.HomeSahulat.repository.UserRepository;
 import com.HomeSahulat.service.BucketService;
 import com.HomeSahulat.service.impl.bucketServiceImpl;
@@ -25,11 +27,13 @@ import java.util.UUID;
 public class Helper {
     private final UserRepository userRepository;
     private final BucketService bucketService;
+    private final ServiceProviderRepository serviceProviderRepository;
     private static final Logger logger = LoggerFactory.getLogger(bucketServiceImpl.class);
 
-    public Helper(UserRepository userRepository, BucketService bucketService) {
+    public Helper(UserRepository userRepository, BucketService bucketService, ServiceProviderRepository serviceProviderRepository) {
         this.userRepository = userRepository;
         this.bucketService = bucketService;
+        this.serviceProviderRepository = serviceProviderRepository;
     }
 
     public static String generateRandomOTP() {
@@ -62,6 +66,20 @@ public class Helper {
             String phone = ((CustomUserDetail) principal).getPhone();
             return userRepository.findByPhoneAndStatusIsTrue(phone)
                     .orElseThrow(() -> new RecordNotFoundException("User not found"));
+        } else {
+            throw new RecordNotFoundException("User not Found");
+        }
+    }
+
+    public ServiceProvider getCurrentServiceProvider() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof CustomUserDetail) {
+            String phone = ((CustomUserDetail) principal).getPhone();
+            User user = userRepository.findByPhoneAndStatusIsTrue(phone)
+                    .orElseThrow(() -> new RecordNotFoundException("User not found"));
+           ServiceProvider serviceProvider =serviceProviderRepository.findByUser_Id(user.getId()).
+                   orElseThrow(() -> new RecordNotFoundException(String.format("Service Provider not found for Userid => %d", user.getId())));
+            return serviceProvider;
         } else {
             throw new RecordNotFoundException("User not Found");
         }

@@ -78,8 +78,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getAllBookingByServiceProvider(Long id) {
-        List<Booking> bookingList = bookingRepository.findAllByServiceProvider_Id(id);
+    public List<BookingDto> getAllBookingByServiceProvider(Long id, String status) {
+        List<Booking> bookingList = bookingRepository.findAllByServiceProvider_IdAndBookingStatus(id, status);
         List<BookingDto> bookingDtoList = new ArrayList<>();
 
         for (Booking booking : bookingList) {

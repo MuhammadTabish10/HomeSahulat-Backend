@@ -8,7 +8,6 @@ import com.HomeSahulat.repository.ServiceProviderRepository;
 import com.HomeSahulat.repository.ServicesRepository;
 import com.HomeSahulat.repository.UserRepository;
 import com.HomeSahulat.service.ServiceProviderService;
-import com.amazonaws.services.budgets.model.DuplicateRecordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -61,6 +60,11 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 
         ServiceProvider createdServiceProvider = serviceProviderRepository.save(serviceProvider);
         return toDto(createdServiceProvider);
+    }
+
+    @Override
+    public ServiceProviderDto getLoggedInServiceProvider() {
+        return toDto(helper.getCurrentServiceProvider());
     }
 
     @Override

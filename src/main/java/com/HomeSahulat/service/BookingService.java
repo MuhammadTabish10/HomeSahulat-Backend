@@ -9,7 +9,7 @@ public interface BookingService {
     BookingDto save(BookingDto bookingDto);
     List<BookingDto> getAll();
     List<BookingDto> getAllBookingByLoggedInUser();
-    List<BookingDto> getAllBookingByServiceProvider(Long id);
+    List<BookingDto> getAllBookingByServiceProvider(Long id, String status);
     Integer countBookingsByStatus(String status);
     Integer countNewBookings();
     Integer countBookingsByServiceType(String ServiceType);
