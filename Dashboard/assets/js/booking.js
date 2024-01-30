@@ -1,7 +1,7 @@
 // Usama Works
 
 var token = localStorage.getItem("token");
-var url = "https://api.homesahulat.stepwaysoftwares.com/api";
+var url = window.myConfig.baseUrl;
 
 function getBookings() {
   fetch(url + "/booking", {
@@ -167,7 +167,7 @@ function getNewBookingCount() {
 getNewBookingCount();
 
 function getCountOfBookingByStatus(status) {
-  debugger
+  
   fetch(`${url}/booking/by-status/${status}`, {
     method: "GET",
     headers: {

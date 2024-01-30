@@ -1,7 +1,7 @@
 // Usama Works
 
 var token = localStorage.getItem("token");
-var url = "https://api.homesahulat.stepwaysoftwares.com/api";
+var url = window.myConfig.baseUrl;
 
 function login() {
 
