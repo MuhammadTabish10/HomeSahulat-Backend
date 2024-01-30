@@ -2,6 +2,7 @@ package com.HomeSahulat.controller;
 
 import com.HomeSahulat.Util.Helper;
 import com.HomeSahulat.dto.ServiceProviderDto;
+import com.HomeSahulat.dto.UserDto;
 import com.HomeSahulat.service.BucketService;
 import com.HomeSahulat.service.ServiceProviderService;
 import org.springframework.http.HttpHeaders;
@@ -62,6 +63,13 @@ public class ServiceProviderController {
         return ResponseEntity.ok(serviceProviderDtoList);
     }
 
+    @GetMapping("/service-provider/verified/null")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<ServiceProviderDto>> getAllServiceProvidersByVerifyNull() {
+        List<ServiceProviderDto> serviceProviderDtoList = serviceProviderService.getAllServiceProviderWhereVerifiedIsNull();
+        return ResponseEntity.ok(serviceProviderDtoList);
+    }
+
     @GetMapping("/service-provider/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ServiceProviderDto> getServiceProviderById(@PathVariable Long id) {
@@ -73,6 +81,13 @@ public class ServiceProviderController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ServiceProviderDto> getServiceProviderByUserId(@PathVariable Long id) {
         ServiceProviderDto serviceProviderDto = serviceProviderService.findByUserId(id);
+        return ResponseEntity.ok(serviceProviderDto);
+    }
+
+    @GetMapping("/service-provider/logged-in")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ServiceProviderDto> getLoggedInServiceProvider() {
+        ServiceProviderDto serviceProviderDto = serviceProviderService.getLoggedInServiceProvider();
         return ResponseEntity.ok(serviceProviderDto);
     }
 

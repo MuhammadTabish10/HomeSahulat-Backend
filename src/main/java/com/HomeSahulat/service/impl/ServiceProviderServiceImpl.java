@@ -8,7 +8,6 @@ import com.HomeSahulat.repository.ServiceProviderRepository;
 import com.HomeSahulat.repository.ServicesRepository;
 import com.HomeSahulat.repository.UserRepository;
 import com.HomeSahulat.service.ServiceProviderService;
-import com.amazonaws.services.budgets.model.DuplicateRecordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -51,7 +50,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         serviceProvider.setCnicUrl("url");
         serviceProvider.setTotalRating(0.0);
         serviceProvider.setAtWork(true);
-        serviceProvider.setVerified(false);
+//        serviceProvider.setVerified(false);
 
         serviceProvider.setServices(servicesRepository.findById(serviceProvider.getServices().getId())
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Service not found for id => %d", serviceProvider.getServices().getId()))));
@@ -61,6 +60,11 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 
         ServiceProvider createdServiceProvider = serviceProviderRepository.save(serviceProvider);
         return toDto(createdServiceProvider);
+    }
+
+    @Override
+    public ServiceProviderDto getLoggedInServiceProvider() {
+        return toDto(helper.getCurrentServiceProvider());
     }
 
     @Override
@@ -95,6 +99,18 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     @Override
     public List<ServiceProviderDto> getAllUnVerifiedServiceProvider(Boolean verify) {
         List<ServiceProvider> serviceProviderList = serviceProviderRepository.findAllByVerified(verify);
+        List<ServiceProviderDto> serviceProviderDtoList = new ArrayList<>();
+
+        for (ServiceProvider serviceProvider : serviceProviderList) {
+            ServiceProviderDto serviceProviderDto = toDto(serviceProvider);
+            serviceProviderDtoList.add(serviceProviderDto);
+        }
+        return serviceProviderDtoList;
+    }
+
+    @Override
+    public List<ServiceProviderDto> getAllServiceProviderWhereVerifiedIsNull() {
+        List<ServiceProvider> serviceProviderList = serviceProviderRepository.findAllByVerifiedIsNull();
         List<ServiceProviderDto> serviceProviderDtoList = new ArrayList<>();
 
         for (ServiceProvider serviceProvider : serviceProviderList) {
