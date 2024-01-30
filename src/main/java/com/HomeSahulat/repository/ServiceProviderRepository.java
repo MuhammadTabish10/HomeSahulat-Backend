@@ -20,6 +20,8 @@ public interface ServiceProviderRepository extends JpaRepository<ServiceProvider
     List<ServiceProvider> findByServiceNameAndStatusTrue(@Param("serviceName") String serviceName);
 
     List<ServiceProvider> findAllByVerified(Boolean verify);
+    List<ServiceProvider> findAllByVerifiedIsNull();
+
 
     @Query("SELECT sp.verified FROM ServiceProvider sp WHERE sp.user.id = :id")
     Optional<Boolean> isVerifiedById(@Param("id") Long id);

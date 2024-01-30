@@ -50,7 +50,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
         serviceProvider.setCnicUrl("url");
         serviceProvider.setTotalRating(0.0);
         serviceProvider.setAtWork(true);
-        serviceProvider.setVerified(false);
+//        serviceProvider.setVerified(false);
 
         serviceProvider.setServices(servicesRepository.findById(serviceProvider.getServices().getId())
                 .orElseThrow(() -> new RecordNotFoundException(String.format("Service not found for id => %d", serviceProvider.getServices().getId()))));
@@ -99,6 +99,18 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
     @Override
     public List<ServiceProviderDto> getAllUnVerifiedServiceProvider(Boolean verify) {
         List<ServiceProvider> serviceProviderList = serviceProviderRepository.findAllByVerified(verify);
+        List<ServiceProviderDto> serviceProviderDtoList = new ArrayList<>();
+
+        for (ServiceProvider serviceProvider : serviceProviderList) {
+            ServiceProviderDto serviceProviderDto = toDto(serviceProvider);
+            serviceProviderDtoList.add(serviceProviderDto);
+        }
+        return serviceProviderDtoList;
+    }
+
+    @Override
+    public List<ServiceProviderDto> getAllServiceProviderWhereVerifiedIsNull() {
+        List<ServiceProvider> serviceProviderList = serviceProviderRepository.findAllByVerifiedIsNull();
         List<ServiceProviderDto> serviceProviderDtoList = new ArrayList<>();
 
         for (ServiceProvider serviceProvider : serviceProviderList) {

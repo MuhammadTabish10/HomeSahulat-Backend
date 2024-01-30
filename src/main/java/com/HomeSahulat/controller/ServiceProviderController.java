@@ -63,6 +63,13 @@ public class ServiceProviderController {
         return ResponseEntity.ok(serviceProviderDtoList);
     }
 
+    @GetMapping("/service-provider/verified/null")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<ServiceProviderDto>> getAllServiceProvidersByVerifyNull() {
+        List<ServiceProviderDto> serviceProviderDtoList = serviceProviderService.getAllServiceProviderWhereVerifiedIsNull();
+        return ResponseEntity.ok(serviceProviderDtoList);
+    }
+
     @GetMapping("/service-provider/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ServiceProviderDto> getServiceProviderById(@PathVariable Long id) {
