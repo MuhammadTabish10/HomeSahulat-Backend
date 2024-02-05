@@ -1,4 +1,4 @@
 // config.js
 window.myConfig = {
-  baseUrl: 'http://localhost:8080/api',
+  baseUrl: 'https://api.homesahulat.stepwaysoftwares.com/api',
 };
